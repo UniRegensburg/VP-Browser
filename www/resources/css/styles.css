@@ -1,0 +1,16 @@
+html, body {
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	margin: 0;
+	padding: 0;
+	background: #e0e0e2;
+}
+
+header {
+	width: 98vw;
+	height: 7vh;
+	padding: 0 1vw;
+	line-height: 7vh;
+	background: #2b4162;
+	font-size: 4vh;
+	color: #FFFFFF;
+}

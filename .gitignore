@@ -1,0 +1,9 @@
+# Node libraries
+node_modules
+
+# PouchDB files
+
+db/
+_replicator
+_users
+pouch__all_dbs__
