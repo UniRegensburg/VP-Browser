@@ -1,21 +1,17 @@
-const NotFound = { template: '<p>Page not found</p>' }
-const Home = { template: '<p>home page1</p>' }
-const About = { template: '<p>about page</p>' }
+/* eslint-env browser */
+/* global Vue, VueRouter */
 
-const routes = {
-  '/': Home,
-  '/about': About
+import Routes from "./Routes.js";
+
+const APP_TARGET = "#app";
+
+var app;
+
+function createApp() {
+  let router = new VueRouter({routes: Routes});
+  app = new Vue({
+    router: router,
+  }).$mount(APP_TARGET);
 }
 
-new Vue({
-  el: '#app',
-  data: {
-    currentRoute: window.location.pathname
-  },
-  computed: {
-    ViewComponent () {
-      return routes[this.currentRoute] || NotFound
-    }
-  },
-  render (h) { return h(this.ViewComponent) }
-})
+createApp();

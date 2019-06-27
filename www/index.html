@@ -1,19 +1,35 @@
-
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-  <link rel="stylesheet" type="text/css" href="resources/css/styles.css"/>
-	<title>VP Browser</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Import Vue and VueRouter from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.0.6/dist/vue-router.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="resources/css/styles.css" />
+    <title>VP Browser</title>
 </head>
-
 <header>VP Browser</header>
+
 <body>
-  <div id="app"></div>
-  <script src="resources/js/build.js"></script>
+    <div id="app">
+        <div id="nav">
+            <ul>
+            	<!-- Navbar with router links -->
+                <li class="active">
+                	<!-- Specify route target with "to"-attribute -->
+                    <router-link to="/">Home</router-link>
+                </li>
+                <li>
+                    <router-link to="/about">About</router-link>
+                </li>
+            </ul>
+        </div>
+        <!-- Element for rendering routed components -->
+        <router-view></router-view>
+    </div>
 </body>
+<script type="module" src="resources/js/build.js"></script>
 
 </html>
