@@ -19,12 +19,10 @@
         	<!-- Navbar with router links -->
             <li class="active">
             	<!-- Specify route target with "to"-attribute -->
-                <router-link to="/"><!--Home</router-link>-->
-                  <button router-link to="/" v-on:click="loadHome">Home</button>
-                </router-link>
+              <router-link to="/">Home</router-link>
             </li>
             <li >
-                <router-link to="/about" v-on:click="loadAbout">About</router-link>
+              <router-link to="/about">About</router-link>
             </li>
         </ul>
     </div>
@@ -32,12 +30,9 @@
     <router-view></router-view>
   </div>
 
-  <script type="module" src="resources/js/build.js"></script>
+  <script src="resources/js/VPApp.js"></script> <!-- position egal -->
 
-  <script src="resources/js/VPApp.js"></script>
-  <script>
-    VPApp.init();
-  </script>
+  <script type="module" src="resources/js/build.js"></script>
 
 </body>
 
