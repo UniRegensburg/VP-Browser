@@ -10,7 +10,9 @@
     <link rel="stylesheet" type="text/css" href="resources/css/styles.css" />
     <title>VP Browser</title>
 </head>
-<header>VP Browser</header>
+<header> <!-- evtl schlechte usability, weil aussieht wie ein home knopf -->
+  VP Browser
+</header>
 
 <body>
   <div id="app">
@@ -22,7 +24,10 @@
               <router-link to="/">Home</router-link>
             </li>
             <li >
-              <router-link to="/about">About</router-link>
+              <router-link to="/versuche">Versuche</router-link>
+            </li>
+            <li >
+              <router-link to="/profil">Profil</router-link>
             </li>
         </ul>
     </div>
@@ -31,6 +36,9 @@
   </div>
 
   <script src="resources/js/VPApp.js"></script> <!-- position egal -->
+  <script src="resources/js/VPController.js"></script>
+  <script src="resources/js/VPModel.js"></script>
+  <script src="resources/js/VPView.js"></script>
 
   <script type="module" src="resources/js/build.js"></script>
 

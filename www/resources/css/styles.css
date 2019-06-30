@@ -21,7 +21,7 @@ header {
 #nav {
 	width: 100vw;
 	background: #2b4162;
-}	
+}
 
 #nav a {
 	color: #FFF;
@@ -48,4 +48,12 @@ header {
 
 #nav li.active {
 	text-decoration: underline;
+}
+
+#right {
+	text-align: right;
+}
+
+a {
+	color: green;
 }
