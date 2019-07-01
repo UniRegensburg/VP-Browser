@@ -11,7 +11,7 @@ function createApp() {
   let router = new VueRouter({routes: Routes});
   app = new Vue({
     router: router,
-    mounted: function() {
+    beforeCreate: function() {
       VPApp.init();
     },
   }).$mount(APP_TARGET);

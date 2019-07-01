@@ -8,9 +8,7 @@ VPApp = (function() {
   var that = {},
   VPController,
   VPModel,
-  VPView,
-  homeLink,
-  aboutLink;
+  VPView;
 
   function init() {
     console.log("Hello World!");
@@ -18,36 +16,21 @@ VPApp = (function() {
     VPController = new VPApp.VPController();
     VPModel = new VPApp.VPModel();
     VPView = new VPApp.VPView();
-    VPController.initVPController();
     VPModel.initVPModel();
     VPView.initVPView();
+    VPController.initVPController(VPModel, VPView);
   }
 
   function loadHome() {
-    console.log("home");
-    homeLink = document.getElementById("bla");
-    homeLink.addEventListener("click", function() {
-      console.log("bla");
-    });
-  }
-
-  function jumpToVDetail() { //
-    window.location.href = "http://localhost:8080/#/vd"; //durch server ip ersetzen
-    //button weil router keine para wie vid (später zum seite generieren)
+    VPController.conLoadHome();
   }
 
   function loadVersuche() {
-    console.log("about");
-    aboutLink = document.getElementById("blub");
-    aboutLink.addEventListener("click", function() {
-      console.log("blub");
-      jumpToVDetail();
-    });
+    VPController.conLoadVersuche();
   }
 
   function loadVDetail() {
-    var h1r = document.getElementById("h1r");
-    h1r.innerHTML = "detail feat js";
+    VPController.conLoadVDetail();
   }
 
   that.init = init;
