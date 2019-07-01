@@ -18,6 +18,10 @@ header {
 	color: #FFFFFF;
 }
 
+#mainApp {
+	padding: 0 1vw;
+}
+
 #nav {
 	width: 100vw;
 	background: #2b4162;
@@ -50,10 +54,19 @@ header {
 	text-decoration: underline;
 }
 
-#right {
-	text-align: right;
+#vlLinks {
+	/*float: left;*/
 }
 
-a {
-	color: green;
+#vlRechts {
+	/*float: right;*/
+}
+
+#vlMain {
+	display: grid;
+	grid-template-columns: 1fr 3fr;
+}
+
+#logout {
+	/*rechts platzieren*/
 }

@@ -11,5 +11,6 @@ import Components from "./Components.js";
    { path: "/profil", component: Components.Profil },
    { path: "/mv", component: Components.meineVersuche },
    { path: "/sessions", component: Components.Sessions },
+   { path: "/logout", component: Components.Logout },
    { path: "/404", component: Components.NotFound },
  ];
