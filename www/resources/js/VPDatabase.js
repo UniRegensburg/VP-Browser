@@ -64,14 +64,13 @@ VPApp.VPDatabase = function() {
   }
 
   function wizardDone(CarModel,sortBy) {
-    connect("132.199.137.35:5984", "car4you", "car4you", "car2018***");
+    connect("127.0.0.1:8080", "vpbrowser", "admin", "vpbrowser");
     getInfo();
     db.allDocs({
       include_docs: true,
       attachments: true,
     }).then(function(result){
-      DbCarArray = result.rows;
-      //console.log(DbCarArray[0].doc);
+      dbEntries = result.rows;
 
     });
   }
