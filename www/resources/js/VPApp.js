@@ -8,7 +8,8 @@ VPApp = (function() {
   var that = {},
   VPController,
   VPModel,
-  VPView;
+  VPView,
+  VPDatabase;
 
   function init() {
     console.log("Hello World!");
@@ -16,6 +17,8 @@ VPApp = (function() {
     VPController = new VPApp.VPController();
     VPModel = new VPApp.VPModel();
     VPView = new VPApp.VPView();
+    VPDatabase = new VPApp.VPDatabase();
+    VPDatabase.initVPDatabase();
     VPModel.initVPModel();
     VPView.initVPView();
     VPController.initVPController(VPModel, VPView);

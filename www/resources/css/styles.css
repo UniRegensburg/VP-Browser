@@ -70,3 +70,7 @@ header {
 #logout {
 	/*rechts platzieren*/
 }
+
+#vt02:hover {
+	cursor: pointer;
+}

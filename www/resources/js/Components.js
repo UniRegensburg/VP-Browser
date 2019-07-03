@@ -57,28 +57,12 @@ const Home = { template: `
         </div>
         <div id="vlRechts">
           <h3>Einträge</h3>
-          <table>
-            <tr>
-              <td>Name</td>
-              <td><router-link to="/vd">Name</router-link></td>
-            </tr>
-            <tr>
-              <td>Typ</td>
-              <td id="vdTyp">online, tagebuch, vr; kat</td>
-            </tr>
-            <tr>
-              <td>Dauer</td>
-              <td>Zeit</td>
-            </tr>
-            <tr>
-              <td>VP</td>
-              <td>VP-Zahl</td>
-            </tr>
-            <tr>
-              <td>Leiter</td>
-              <td>Name</td>
-            </tr>
-          </table>
+          <div id="hacker-list">
+            <input class="search" />
+            <span class="sort" data-sort="name">Sort by name</span>
+            <span class="sort" data-sort="VP">Sort by VP</span>
+            <ul class="list"></ul>
+          </div>
         </div>
       </div>
     </div>`
@@ -203,6 +187,56 @@ const Home = { template: `
   Logout = { template: "<p>Logout</p>" },
 
   NotFound = { template: "<p>Page not found</p>" };
+
+var justKeepingString = `
+<table>
+  <table>
+    <tr>
+      <td>Name</td>
+      <td><router-link to="/vd">Name</router-link></td>
+    </tr>
+    <tr>
+      <td>Typ</td>
+      <td id="vdTyp">online, tagebuch, vr; kat</td>
+    </tr>
+    <tr>
+      <td>Dauer</td>
+      <td>Zeit</td>
+    </tr>
+    <tr>
+      <td>VP</td>
+      <td>VP-Zahl</td>
+    </tr>
+    <tr>
+      <td>Leiter</td>
+      <td>Name</td>
+    </tr>
+  </table>
+  <br>
+  <table id="vt01">
+    <tr>
+      <td>Name</td>
+      <td><router-link to="/vd">Name2</router-link></td>
+    </tr>
+    <tr>
+      <td>Typ</td>
+      <td id="vdTyp">online, tagebuch, vr; kat</td>
+    </tr>
+    <tr>
+      <td>Dauer</td>
+      <td>Zeit</td>
+    </tr>
+    <tr>
+      <td>VP</td>
+      <td>VP-Zahl</td>
+    </tr>
+    <tr>
+      <td>Leiter</td>
+      <td>Name</td>
+    </tr>
+  </table>
+</table>
+`
 
 // Export components
 export default {
