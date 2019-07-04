@@ -24,7 +24,9 @@ VPApp.VPController = function() {
       valueNames: [ 'name', 'typ', 'dauer', 'VP', 'leiter' ],
       item: '<li><h3 class="name"></h3><p class="typ"></p><p class="dauer"></p><p class="VP"></p><p class="leiter"></p></li>'
     };
-
+    //name soll verlinken
+    //a-tag: verlinkt und lädt seite neu -> verliere versuchsinfo, wie window.location
+    //router-link: von vue nicht konvertiert, da es im list.js framework ist
     var values = [
       { name: 'a versuch', typ: 'online', dauer: '0.5', VP: '0.5 VP', leiter: 'lucas' }
       , { name: 'super', typ: 'tagebuch', dauer: '1.5', VP: '1.5 VP', leiter: 'maria' }
@@ -52,10 +54,16 @@ VPApp.VPController = function() {
 
   function listenForNames() {
     let namen = document.getElementsByClassName("name");
+    console.log(event);
     vName = event.path[0].innerText;
     vName = vName.replace(" ", "_");
-    //console.log(vName);
-    window.location.href = "http://localhost:8080/www/#/vd";
+    console.log(vName);
+    window.location.href = "http://localhost:8080/vd";
+    //lädt seite neu, hats im alten system nicht -> event und damit versuch weg
+    //auf vue router zugreifen
+    //this.$router.replace('/vd');
+    //in anderen projekten genutzt, finde this.$router nicht
+    //->nicht sicher, ob es das problem lösen würde
   }
 
   function conLoadVDetail() {
@@ -66,8 +74,8 @@ VPApp.VPController = function() {
     //vdTyp.innerHTML = "online, tagebuch, vr; kat + js";
   }
 
-  function jumpToVDetail() { //
-    window.location.href = "http://localhost:8080/www/#/vd"; //durch server ip ersetzen
+  function jumpToVDetail() { //nicht mehr nötig
+    window.location.href = "http://localhost:8080/vd"; //durch server ip ersetzen
     //button weil router keine para wie vid (später zum seite generieren)
   }
 
