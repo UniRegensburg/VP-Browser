@@ -12,7 +12,7 @@
       components: {
           'app-header': navBar,
       },
-      beforeCreate: function() {
+      beforeMount: function() {
         VPApp.init();
       }
   }

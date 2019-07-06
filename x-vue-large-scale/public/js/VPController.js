@@ -64,6 +64,10 @@ VPApp.VPController = function() {
     //this.$router.replace('/vd');
     //in anderen projekten genutzt, finde this.$router nicht
     //->nicht sicher, ob es das problem lösen würde
+
+    //wenn db funktioniert und schnell genug ist:
+    //current versuch bei onclick in db laden und bei vdetail ziehen
+    //wahlweise doch session storage?
   }
 
   function conLoadVDetail() {

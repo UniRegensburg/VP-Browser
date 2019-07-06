@@ -9,7 +9,8 @@ VPApp = (function() {
   VPController,
   VPModel,
   VPView,
-  VPDatabase;
+  VPDatabase,
+  VPFirebase;
 
   function init() {
     console.log("Hello World!");
@@ -17,8 +18,10 @@ VPApp = (function() {
     VPController = new VPApp.VPController();
     VPModel = new VPApp.VPModel();
     VPView = new VPApp.VPView();
-    VPDatabase = new VPApp.VPDatabase();
-    VPDatabase.initVPDatabase();
+    //VPFirebase = new VPApp.VPFirebase();
+    //VPDatabase = new VPApp.VPDatabase();
+    //VPDatabase.initVPDatabase();
+    //VPFirebase.lightTheFlames();
     VPModel.initVPModel();
     VPView.initVPView();
     VPController.initVPController(VPModel, VPView);
