@@ -22,7 +22,7 @@ VPApp.VPController = function() {
 
     var options = {
       valueNames: [ 'name', 'typ', 'dauer', 'VP', 'leiter' ],
-      item: '<li><h3 class="name"></h3><p class="typ"></p><p class="dauer"></p><p class="VP"></p><p class="leiter"></p></li>'
+      item: '<li><a href="/vd" class="name"></a><p class="typ"></p><p class="dauer"></p><p class="VP"></p><p class="leiter"></p></li>'
     };
     //name soll verlinken
     //a-tag: verlinkt und lädt seite neu -> verliere versuchsinfo, wie window.location
@@ -58,7 +58,8 @@ VPApp.VPController = function() {
     vName = event.path[0].innerText;
     vName = vName.replace(" ", "_");
     console.log(vName);
-    window.location.href = "http://localhost:8080/vd";
+    sessionStorage.setItem('versuch', vName);
+    //window.location.href = "http://localhost:8080/vd";
     //lädt seite neu, hats im alten system nicht -> event und damit versuch weg
     //auf vue router zugreifen
     //this.$router.replace('/vd');
@@ -73,6 +74,8 @@ VPApp.VPController = function() {
   function conLoadVDetail() {
     //aufruf braucht versuchs id um inhalt aus db zu laden
     //vname
+    vName = sessionStorage.getItem('versuch');
+    sessionStorage.removeItem('versuch');
     console.log(vName);
     //var vdTyp = document.getElementById("vdTyp");
     //vdTyp.innerHTML = "online, tagebuch, vr; kat + js";
