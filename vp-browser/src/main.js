@@ -17,58 +17,12 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-let db = firebase.firestore();
-
-let testlvs = "";
-function getUserDoc() {
-  db.collection("nutzer").get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-          //console.log(`${doc.id} => ${doc.data()}`);
-          if (doc.id === "test") {
-            let inhalt = doc.data();
-            console.log(doc.id); //rz kennung
-            console.log(inhalt.name); //unwichtig
-            console.log(inhalt.lvs); // gelockte versuche
-            testlvs = inhalt.lvs;
-            console.log(testlvs);
-          }
-      });
-  });
-}
-
-getUserDoc();
-
-function pushNewUser() {
-  db.collection("nutzer").doc("t3").set({
-      name: "t3",
-      lvs: "text"
-  })
-  .then(function() {
-      //console.log("Document successfully written!");
-  })
-  .catch(function(error) {
-      console.error("Error writing document: ", error);
-  });
-}
-
-function writeData() {
-  db.collection("nutzer").doc("t2").update({
-      lvs: "iwas vom code2"
-  })
-  .then(function() {
-      //console.log("Document successfully updated!");
-  });
-}
-
-//problem: firebase in public/js nicht verfügbar
-
-
 
 new Vue({
   router,
   render: h => h(App),
 }).$mount('#app');
 
-/* mom noch ohne
+/* mom ohne
 vue add vuex
 */

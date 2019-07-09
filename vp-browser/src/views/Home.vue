@@ -19,9 +19,15 @@
   // @ is an alias to /src
   //import HelloWorld from '@/components/HelloWorld.vue';
   //console.log("home");
+  import Firebase from '../js/Firebase';
 
+  let myFirebase = new Firebase();
   function initHome() {
+    //let db = firebase.firestore();
     test();
+    myFirebase.getUserDoc();
+    myFirebase.pushNewUser();
+    myFirebase.writeData();
   }
 
   function test() {
