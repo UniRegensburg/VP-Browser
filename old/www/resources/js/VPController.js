@@ -5,7 +5,8 @@ var VPController = VPController || {};
 VPApp.VPController = function() {
   "use strict";
 
-  var that = {};
+  var that = {},
+  vName = "";
 
   function initVPController(VPModel, VPView) {
     console.log("VPController")
@@ -50,25 +51,23 @@ VPApp.VPController = function() {
   }
 
   function listenForNames() {
-    let namen = document.getElementsByClassName("name"),
-    vName = event.path[0].innerText,
-    vPfad = "";
+    let namen = document.getElementsByClassName("name");
+    vName = event.path[0].innerText;
     vName = vName.replace(" ", "_");
-    vPfad = "http://localhost:8080/www/#/v"+vName;
-    console.log(vName);
-    window.location.href = vPfad;
+    //console.log(vName);
+    window.location.href = "http://localhost:8080/www/#/vd";
   }
 
   function conLoadVDetail() {
     //aufruf braucht versuchs id um inhalt aus db zu laden
     //vname
-    console.log("hier viel js");
-    var vdTyp = document.getElementById("vdTyp");
+    console.log(vName);
+    //var vdTyp = document.getElementById("vdTyp");
     //vdTyp.innerHTML = "online, tagebuch, vr; kat + js";
   }
 
   function jumpToVDetail() { //
-    window.location.href = "http://localhost:8080/#/www/vd"; //durch server ip ersetzen
+    window.location.href = "http://localhost:8080/www/#/vd"; //durch server ip ersetzen
     //button weil router keine para wie vid (später zum seite generieren)
   }
 
