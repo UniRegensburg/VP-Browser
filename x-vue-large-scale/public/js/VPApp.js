@@ -39,9 +39,24 @@ VPApp = (function() {
     VPController.conLoadVDetail();
   }
 
+  function loadProfil() {
+    VPController.conLoadProfil();
+  }
+
+  function loadSessions() {
+    VPController.conLoadSessions();
+  }
+
+  function loadMV() {
+    VPController.conLoadMV();
+  }
+
   that.init = init;
   that.loadHome = loadHome;
   that.loadVersuche = loadVersuche;
   that.loadVDetail = loadVDetail;
+  that.loadProfil = loadProfil;
+  that.loadSessions = loadSessions;
+  that.loadMV = loadMV;
   return that;
 }());
