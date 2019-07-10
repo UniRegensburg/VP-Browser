@@ -31,7 +31,7 @@
       <div id="hacker-list">
         <input class="search" />
         <span class="sort" data-sort="name">Sort by name</span>
-        <span class="sort" data-sort="VP">Sort by VP</span>
+        <span class="sort" data-sort="vp">Sort by VP</span>
         <ul class="list"></ul>
       </div>
     </div>
@@ -42,59 +42,21 @@
 <script>
   // @ is an alias to /src
   //import HelloWorld from '@/components/HelloWorld.vue';
-  var wipData = [],
+  import Firebase from '../js/Firebase';
+
+  let myFirebase = new Firebase(),
   vName = "";
 
-  function fillWipData() {
-    let set1 = {
-      "name" : "a_versuch",
-      "typ" : "online",
-      "dauer" : "0.5",
-      "VP" : "0.5 vp",
-      "leiter" : "lucas",
-      "sessions" : "01.01.10 10:00;01.01.11 11:00;01.02.12 12:00;99.99.99 99:15",
-      "end" : "01.03.13",
-      "descr" : "hexenschuss",
-      "raum" : "h6",
-      "email" : "lucas@mail.de",
-      "lehrkraft" : "Prof. Dr. Peter Gehr",
-      "session" : "Sessionsknopf",
-      "lockedSessions" : "01.01.10 10:00"
-    };
-    let set2 = {
-      "name" : "super",
-      "typ" : "tagbeuch",
-      "dauer" : "1.5",
-      "VP" : "1.5 vp",
-      "leiter" : "maria"
-    };
-    let set3 = {
-      "name" : "d",
-      "typ" : "öner",
-      "dauer" : "1",
-      "VP" : "1 vp",
-      "leiter" : "mann",
-      "sessions" : "09.07.19 14:00;10.07.19 14:00;10.07.19 15:00",
-      "end" : "02.00.20",
-      "descr" : "bimstein",
-      "raum" : "pt cafete",
-      "email" : "e@mail.de",
-      "lehrkraft" : "tom & jerry",
-      "session" : "Sessionsknopf",
-      "lockedSessions" : ""
-    };
-    wipData = [set1, set2, set3];
-  }
-
   function loadVersuche() {
-    fillWipData();
-    console.log(wipData);
+    let vArray = myFirebase.convertVStrToArray(sessionStorage.getItem("vArrayStr"));
+    console.log(vArray);
+
     var options = {
-      valueNames: [ 'name', 'typ', 'dauer', 'VP', 'leiter' ],
-      item: '<li><a href="/vd" class="name"></a><p class="typ"></p><p class="dauer"></p><p class="VP"></p><p class="leiter"></p></li>'
+      valueNames: [ 'name', 'typ', 'dauer', 'vp', 'leiter' ],
+      item: '<li><a href="/vd" class="name"></a><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="leiter"></p></li>'
     };
-    var hackerList = new List('hacker-list', options, wipData);
-    console.log(document.getElementById("hackerList"));
+    var hackerList = new List('hacker-list', options, vArray);
+    //console.log(document.getElementById("hackerList"));
     setupNamenListener();
   }
 

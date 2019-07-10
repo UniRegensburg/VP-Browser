@@ -7,15 +7,26 @@
 
 <script>
     import navBar from './components/NavBar.vue';
+    import Firebase from './js/Firebase';
+
+    //let myFirebase = new Firebase();
+    //myFirebase.getAllVersuche();
+
+    sessionStorage.setItem("nutzerName", "hal35337");
 
     export default {
       components: {
           'app-header': navBar,
       },
-      beforeMount: function() {
-        //VPApp.init();
+      created: function() {
+        let myFirebase = new Firebase();
+        myFirebase.getAllVersuche();
+        myFirebase.getUser();
+        //console.log(sessionStorage.getItem("vArrayStr"));
+        console.log(sessionStorage.getItem("benach"));
+        console.log(sessionStorage.getItem("lvs"));
       }
-  }
+  };
 </script>
 
 <style>

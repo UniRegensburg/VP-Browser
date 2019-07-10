@@ -25,9 +25,26 @@
   function initHome() {
     //let db = firebase.firestore();
     test();
-    myFirebase.getUserDoc();
-    myFirebase.pushNewUser();
-    myFirebase.writeData();
+    //myFirebase.getAllVersuche();
+    //myFirebase.getUserDoc();
+    //myFirebase.pushNewUser();
+    //myFirebase.writeData();
+    console.log(sessionStorage.getItem("nutzerName"));
+    //let vArrayStr = sessionStorage.getItem("vArrayStr");
+    //console.log(vArrayStr);
+    //let vArray = myFirebase.convertVStrToArray(vArrayStr);
+    //console.log(vArray);
+    getFirstVersuch();
+  }
+
+  function getFirstVersuch() {
+    //let userData = myFirebase.getUser();
+    //console.log(userData);
+    //getFirstFromVStr(userData.lvs);
+  }
+
+  function getFirstFromVStr(vStr) {
+
   }
 
   function test() {
