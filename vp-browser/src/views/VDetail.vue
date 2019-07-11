@@ -30,11 +30,23 @@
     document.getElementById("vdvName").innerHTML = strVN;
 
     //list laden
-    let versuch = myFirebase.getVersuch(); //später query? jetz alle versuche aus sessionStorage durchsuchen
+    let versuch = myFirebase.getVersuch(), //später query? jetz alle versuche aus sessionStorage durchsuchen,
+    link = versuch.href;
     var options = {
       valueNames: ['typ', 'dauer', 'vp', 'descr', 'linkSes', 'raum', 'leiter', 'email', 'lehrkraft'],
-      item: '<li><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="descr"></p></br><a href="/sessions" class="linkSes"></a><p class="raum"></p></br><p class="leiter"></p><p class="email"></p><p class="lehrkraft"></p></li>'};
+      item: '<li><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="descr"></p></br><a class="linkSes"></a><p class="raum"></p></br><p class="leiter"></p><p class="email"></p><p class="lehrkraft"></p></li>'};
     var detailList = new List('detail-list', options, versuch);
+
+    setLink(link);
+  }
+
+  function setLink(link) {
+    let aTag = document.getElementsByClassName("linkSes")[0];
+    console.log(aTag);
+    aTag.addEventListener("click", function() {
+      console.log("listener");
+      window.location.href=link;
+    });
   }
 
   export default {
@@ -42,3 +54,11 @@
     mounted: function() {loadVDetail();},
   };
 </script>
+
+<style>
+  .linkSes {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+</style>

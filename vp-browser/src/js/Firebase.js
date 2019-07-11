@@ -81,8 +81,8 @@ Firebase.prototype.getAllVersuche = function() {
       let singleV = [];
       singleV.push(doc.id);
       let inhalt = doc.data(),
-      vDataStr = "" + inhalt.aktiv + "\;" + inhalt.dauer + "\;" + inhalt.descr + "\;" + inhalt.email + "\;" + inhalt.lehrkraft +  "\;" + inhalt.leiter + "\;" + inhalt.linkSes + "\;" + inhalt.lockedSes + "\;" + inhalt.raum + "\;" + inhalt.sessions + "\;" + inhalt.typ + "\;" + inhalt.vp;
-      //indexe: 0 aktiv; 1 dauer; 2 descr; 3 email; 4 lehrkraft; 5 leiter; 6 linkSes; 7 lockedSes; 8 raum; 9 sessions; 10 typ; 11 vp
+      vDataStr = "" + inhalt.aktiv + "\;" + inhalt.dauer + "\;" + inhalt.descr + "\;" + inhalt.email + "\;" + inhalt.href + "\;" + inhalt.lehrkraft +  "\;" + inhalt.leiter + "\;" + inhalt.linkSes + "\;" + inhalt.lockedSes + "\;" + inhalt.raum + "\;" + inhalt.sessions + "\;" + inhalt.typ + "\;" + inhalt.vp;
+      //indexe: 0 aktiv; 1 dauer; 2 descr; 3 email; 4 href; 5 lehrkraft; 6 leiter; 7 linkSes; 8 lockedSes; 9 raum; 10 sessions; 11 typ; 12 vp
       singleV.push(vDataStr);
       versuchsArray.push(singleV);
     });
@@ -112,7 +112,7 @@ Firebase.prototype.convertVStrToArray = function(vStr) {
 //nötig, da sessionStorage mit komplexen datentypen probleme macht
 function vSubStringToJSON(name, subStr) {
   let splitArray = subStr.split(";"),
-  returnJSON = {name: name, aktiv: splitArray[0], dauer: splitArray[1], descr: splitArray[2], email: splitArray[3], lehrkraft: splitArray[4], leiter: splitArray[5], linkSes: splitArray[6], lockedSes: splitArray[7], raum: splitArray[8], sessions: splitArray[9], typ: splitArray[10], vp: splitArray[11]};
+  returnJSON = {name: name, aktiv: splitArray[0], dauer: splitArray[1], descr: splitArray[2], email: splitArray[3], href: splitArray[4], lehrkraft: splitArray[5], leiter: splitArray[6], linkSes: splitArray[7], lockedSes: splitArray[8], raum: splitArray[9], sessions: splitArray[10], typ: splitArray[11], vp: splitArray[12]};
   return(returnJSON);
 }
 
