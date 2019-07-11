@@ -28,8 +28,8 @@
     let versuch = myFirebase.getVersuch();
     let sessionString = versuch.sessions; //schlecht benannt mit sessions
     let lockedSessionsString = versuch.lockedSes;
-    let sArray = sessionString.split("_");
-    let lsArray = lockedSessionsString.split("_");
+    let sArray = sessionString.split("~");
+    let lsArray = lockedSessionsString.split("~");
     console.log(sArray);
 
     let sessionDiv = document.getElementById("sessionSlots");
