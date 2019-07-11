@@ -81,8 +81,8 @@ Firebase.prototype.getAllVersuche = function() {
       let singleV = [];
       singleV.push(doc.id);
       let inhalt = doc.data(),
-      vDataStr = "" + inhalt.aktiv + "\;" + inhalt.dauer + "\;" + inhalt.descr + "\;" + inhalt.email + "\;" + inhalt.href + "\;" + inhalt.lehrkraft +  "\;" + inhalt.leiter + "\;" + inhalt.linkSes + "\;" + inhalt.lockedSes + "\;" + inhalt.raum + "\;" + inhalt.sessions + "\;" + inhalt.typ + "\;" + inhalt.vp;
-      //indexe: 0 aktiv; 1 dauer; 2 descr; 3 email; 4 href; 5 lehrkraft; 6 leiter; 7 linkSes; 8 lockedSes; 9 raum; 10 sessions; 11 typ; 12 vp
+      vDataStr = "" + inhalt.aktiv + "\;" + inhalt.dauer + "\;" + inhalt.descr + "\;" + inhalt.email + "\;" + inhalt.href + "\;" + inhalt.lehrkraft +  "\;" + inhalt.leiter + "\;" + inhalt.linkSes + "\;" + inhalt.lockedSes + "\;" + inhalt.raum + "\;" + inhalt.sessions + "\;" + inhalt.typ + "\;" + inhalt.vp + "\;" + inhalt.xStart + "\;" + inhalt.xEnd + "\;" + inhalt.xSemMin + "\;" + inhalt.xSemMax;
+      //indexe: 0 aktiv; 1 dauer; 2 descr; 3 email; 4 href; 5 lehrkraft; 6 leiter; 7 linkSes; 8 lockedSes; 9 raum; 10 sessions; 11 typ; 12 vp; 13 xstart; 14 xend; 15 xsemmin; 16 xsemmax
       singleV.push(vDataStr);
       versuchsArray.push(singleV);
     });
@@ -112,7 +112,7 @@ Firebase.prototype.convertVStrToArray = function(vStr) {
 //nötig, da sessionStorage mit komplexen datentypen probleme macht
 function vSubStringToJSON(name, subStr) {
   let splitArray = subStr.split(";"),
-  returnJSON = {name: name, aktiv: splitArray[0], dauer: splitArray[1], descr: splitArray[2], email: splitArray[3], href: splitArray[4], lehrkraft: splitArray[5], leiter: splitArray[6], linkSes: splitArray[7], lockedSes: splitArray[8], raum: splitArray[9], sessions: splitArray[10], typ: splitArray[11], vp: splitArray[12]};
+  returnJSON = {name: name, aktiv: splitArray[0], dauer: splitArray[1], descr: splitArray[2], email: splitArray[3], href: splitArray[4], lehrkraft: splitArray[5], leiter: splitArray[6], linkSes: splitArray[7], lockedSes: splitArray[8], raum: splitArray[9], sessions: splitArray[10], typ: splitArray[11], vp: splitArray[12], xStart: splitArray[13], xEnd: splitArray[14], xSemMin: splitArray[15], xSemMax: splitArray[16]};
   return(returnJSON);
 }
 

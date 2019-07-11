@@ -38,6 +38,33 @@
     var detailList = new List('detail-list', options, versuch);
 
     setLink(link);
+    setExtraText();
+  }
+
+  function setExtraText() {
+    let typ = document.getElementsByClassName("typ")[0];
+    typ.innerText = "Typ: " + typ.innerText;
+
+    let dauer = document.getElementsByClassName("dauer")[0];
+    dauer.innerText = "Dauer: " + dauer.innerText + "h";
+
+    let vp = document.getElementsByClassName("vp")[0];
+    vp.innerText = "VP-Stunden: " + vp.innerText;
+
+    let descr = document.getElementsByClassName("descr")[0];
+    descr.innerText = "Beschreibung: " + descr.innerText;
+
+    let raum = document.getElementsByClassName("raum")[0];
+    raum.innerText = "Raum: " + raum.innerText;
+
+    let leiter = document.getElementsByClassName("leiter")[0];
+    leiter.innerText = "Leiter: " + leiter.innerText;
+
+    let email = document.getElementsByClassName("email")[0];
+    email.innerText = "Email: " + email.innerText;
+
+    let lehrkraft = document.getElementsByClassName("lehrkraft")[0];
+    lehrkraft.innerText = "Lehrkraft: " + lehrkraft.innerText;
   }
 
   function setLink(link) {
