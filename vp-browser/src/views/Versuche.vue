@@ -81,6 +81,7 @@
       setKurse(versuche);
     }
     setDateInputMinMax(versuche);
+    setSemesterMinMax(versuche);
   }
 
   function setupFilterListeners() {
@@ -178,6 +179,37 @@
         semMax = 99;
       }
     });
+
+    //setSemesterMinMax();
+  }
+
+  function setSemesterMinMax(versuche) {
+    let semMinArray = [],
+    semMaxArray = [],
+    semMinInput = document.getElementById("semMin"),
+    semMaxInput = document.getElementById("semMax"),
+    minEndIndex,
+    maxEndIndex;
+    for (let i=0; i<versuche.length; i++) {
+      semMinArray.push(versuche[i].xSemMin);
+      semMaxArray.push(versuche[i].xSemMax);
+    }
+    semMinArray = sortNumbers(semMinArray);
+    semMaxArray = sortNumbers(semMaxArray);
+    minEndIndex = semMinArray.length-1;
+    maxEndIndex = semMaxArray.length-1;
+
+    semMinInput.min = semMinArray[0];
+    semMinInput.max = semMinArray[minEndIndex];
+    semMaxInput.min = semMaxArray[0];
+    semMaxInput.max = semMaxArray[maxEndIndex];
+  }
+
+  function sortNumbers(numArray) {
+    numArray.sort(function(a, b){return a-b});
+    //https://www.w3schools.com/jsref/jsref_sort.asp
+    console.log(numArray);
+    return(numArray);
   }
 
   function setupDateListener() {
