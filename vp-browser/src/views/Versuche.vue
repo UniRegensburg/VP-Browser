@@ -118,8 +118,12 @@
           if ((date1-vDate1)<=0 && (date2-vDate2)>=0) { //TODO logik - done
             //console.log("date"+i);
             //filterArray.push(vArray[i])
-            if (checkedKats.includes(vArray[i].typ) || checkedKats.length === 0) {
-              filterArray.push(vArray[i])
+            let vArrayTypSplit = vArray[i].typ.split("~");
+            for (let j=0; j<vArrayTypSplit.length; j++) {
+              if (checkedKats.includes(vArrayTypSplit[j]) || checkedKats.includes(vArray[i].typ) || checkedKats.length === 0) {
+                filterArray.push(vArray[i]);
+                break; //keine mehrfacheinträge
+              }
             }
           }
         }
@@ -193,11 +197,20 @@
   }
 
   function setKategorien() {
-    let katDiv = document.getElementById("katDiv");
+    let katDiv = document.getElementById("katDiv"),
+    katSplitArray = [];
     katDiv.innerHTML = "";
-    for (let i=0; i<vArray.length; i++) {
-      if (!(katArray.includes(vArray[i].typ))) {
-        katArray.push(vArray[i].typ);
+    for (let i=0; i<vArray.length; i++) { //unique kats
+      let smallSplitArray=vArray[i].typ.split("~");
+      for (let j=0; j<smallSplitArray.length; j++) {
+        katSplitArray.push(smallSplitArray[j]);
+      }
+    }
+    console.log(katSplitArray);
+    for (let i=0; i<katSplitArray.length; i++) {
+      if (!(katArray.includes(katSplitArray[i]))) {
+        katArray.push(katSplitArray[i]);
+        console.log(katArray);
         let itemdiv = document.createElement("DIV"),
         item = document.createElement("INPUT");
         itemdiv.class = "inlineP"
@@ -205,7 +218,7 @@
         item.name = "kat";
         item.value = i;
         itemdiv.appendChild(item);
-        itemdiv.innerHTML += katArray[i] + "</br>";
+        itemdiv.innerHTML += katSplitArray[i] + "</br>";
         katDiv.appendChild(itemdiv);
         katBoolArray.push(false);
       }
@@ -239,7 +252,7 @@
   function setExtraText() {
     let typ = document.getElementsByClassName("typ");
     for (let i=0; i<typ.length; i++) {
-      typ[i].innerText = "Typ: " + typ[i].innerText;
+      typ[i].innerText = "Typ: " + typ[i].innerText.replace("~", ", ");
     }
 
     let dauer = document.getElementsByClassName("dauer");
