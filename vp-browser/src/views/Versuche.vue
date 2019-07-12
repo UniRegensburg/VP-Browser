@@ -46,8 +46,8 @@
   let myFirebase = new Firebase(),
   vArray = [],
   vName = "",
-  startDate = "1970-01-01T00:00:00",
-  endDate = "2999-12-31T00:00:00",
+  startDate = "1970-01-01",
+  endDate = "2999-12-31",
   semMin = 0,
   semMax = 99,
   vpzMin = 0.0,
@@ -60,7 +60,7 @@
 
   function loadVersuche() {
     vArray = myFirebase.convertVStrToArray(sessionStorage.getItem("vArrayStr"));
-    console.log(vArray);
+    //console.log(vArray);
 
     fillListe(vArray);
     setupNamenListener();
@@ -71,15 +71,15 @@
   function fillListe(versuche) {
     var options = {
       valueNames: [ 'name', 'typ', 'dauer', 'vp', 'leiter' ],
-      item: '<li><a href="/vd" class="name"></a><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="leiter"></p></li>'
+      item: '<li><a href="/vd" class="name"></a><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="leiter"></p><p class="xKurs"></p></li>'
     };
     var hackerList = new List('hacker-list', options, versuche);
-    //console.log(document.getElementById("hackerList"));
     setExtraText();
     if(!firstBool) {
       setKategorien();
       firstBool = false;
     }
+    setDateInputMinMax(versuche);
   }
 
   function setupFilterListeners() {
@@ -98,10 +98,10 @@
   }
 
   function filterVersuche() {
-    console.log(semMin, semMax, vpzMin, vpzMax, startDate, endDate);
+    //console.log(semMin, semMax, vpzMin, vpzMax, startDate, endDate);
     filterArray = [];
     let checkedKats = getCheckedKats();
-    console.log(checkedKats);
+    //console.log(checkedKats);
     document.getElementById("hacker-list").children[3].innerHTML = "";
     //nach sem, vp, datum einzeln filtern, jeweils vNamen zurückgeben und dann schauen?
     for (let i=0; i<vArray.length; i++) {
@@ -181,19 +181,81 @@
 
     startDateEl.addEventListener("input", function() {
       if (startDateEl.value != "") {
-        startDate = startDateEl.value+"T00:00:00";
+        startDate = startDateEl.value;
       } else {
-        startDate = "1970-01-01T00:00:00";
+        startDate = "1970-01-01";
       }
     });
 
     endDateEl.addEventListener("input", function() {
       if (endDateEl.value != "") {
-        endDate = endDateEl.value+"T00:00:00";
+        endDate = endDateEl.value;
       } else {
-       endDate = "2999-12-31T00:00:00";
+       endDate = "2999-12-31";
       }
     });
+  }
+
+  function setDateInputMinMax(versuche) {
+    let startDates = [],
+    endDates = [],
+    startMinMax,
+    endMinMax,
+    startDateEl = document.getElementById("startDate"),
+    endDateEl = document.getElementById("endDate");
+
+;
+
+    for (let i=0; i<versuche.length; i++) {
+      //let startDateWip = new Date(versuche[i].xStart),
+      //endDateWip = new Date(versuche[i].xEnd);
+      //console.log(versuche[i].xStart);
+      //console.log(startDateWip);
+      //console.log(versuche[i].xEnd);
+      //console.log(endDateWip);
+      startDates.push(versuche[i].xStart);
+      endDates.push(versuche[i].xEnd);
+    }
+
+    startMinMax = getSortedDateFromArray(startDates);
+    endMinMax = getSortedDateFromArray(endDates);
+    let startMaxIndex = startMinMax.length-1,
+    endMaxIndex = endMinMax.length-1;
+
+    startDateEl.min = startMinMax[0];
+    startDateEl.max = startMinMax[startMaxIndex];
+    endDateEl.min = endMinMax[0];
+    endDateEl.max = endMinMax[endMaxIndex];
+  }
+
+  function getSortedDateFromArray(dateArray) {
+    let returnArray = [],
+    smallest,
+    index;
+    //sconsole.log(dateArray);
+    while (dateArray.length > 0) {
+      smallest = dateArray[0],
+      index = 0;
+      for (let i=0; i<dateArray.length; i++) {
+        let dateA = new Date(smallest),
+        dateB = new Date(dateArray[i]);
+        if (smallest > dateArray[i]) {
+          //console.log("smaller: "+ smallest + dateArray[i]);
+          smallest = dateArray[i];
+          index = i;
+        } else {
+          //console.log("not smaller: "+ smallest + dateArray[i]);
+        }
+      }
+      dateArray.splice(index, 1);
+      let partArray = [];
+      partArray.push(smallest);
+      //partArray.push(index);
+      returnArray.push(partArray);
+      //console.log(dateArray);
+    }
+    //console.log(returnArray);
+    return(returnArray);
   }
 
   function setKategorien() {
@@ -206,11 +268,11 @@
         katSplitArray.push(smallSplitArray[j]);
       }
     }
-    console.log(katSplitArray);
+    //console.log(katSplitArray);
     for (let i=0; i<katSplitArray.length; i++) {
       if (!(katArray.includes(katSplitArray[i]))) {
         katArray.push(katSplitArray[i]);
-        console.log(katArray);
+        //console.log(katArray);
         let itemdiv = document.createElement("DIV"),
         item = document.createElement("INPUT");
         itemdiv.class = "inlineP"
