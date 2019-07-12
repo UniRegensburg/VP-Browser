@@ -82,6 +82,7 @@
     }
     setDateInputMinMax(versuche);
     setSemesterMinMax(versuche);
+    setVPZMinMax(versuche);
   }
 
   function setupFilterListeners() {
@@ -158,6 +159,23 @@
         vpzMax = 99.0;
       }
     });
+  }
+
+  function setVPZMinMax(versuche) {
+    let vpzArray = [],
+    vpzMinInput = document.getElementById("vpzMin"),
+    vpzMaxInput = document.getElementById("vpzMax"),
+    vpzEndIndex;
+    for (let i=0; i<versuche.length; i++) {
+      vpzArray.push(versuche[i].vp);
+    }
+    vpzArray = sortNumbers(vpzArray);
+    vpzEndIndex = vpzArray.length-1;
+
+    vpzMinInput.min = vpzArray[0];
+    vpzMinInput.max = vpzArray[vpzEndIndex];
+    vpzMaxInput.min = vpzArray[0];
+    vpzMaxInput.max = vpzArray[vpzEndIndex];
   }
 
   function setupSemesterListener() {
