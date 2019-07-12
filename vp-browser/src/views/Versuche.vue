@@ -16,11 +16,8 @@
       </div>
       <div>
         <h4>Kurse</h4>
-        <form>
-          <input type="checkbox" name="kurs" value="01">UE<br>
-          <input type="checkbox" name="kurs" value="02">MMI<br>
-          <input type="checkbox" name="kurs" value="03">Sonstige<br>
-        </form>
+        <div id="kursDiv">
+        </div>
       </div>
       <br>
       <button id="updateFilter">Filten anwenden</button>
@@ -29,8 +26,10 @@
       <h3>Einträge</h3>
       <div id="hacker-list">
         <input class="search" placeholder="Suche"/>
-        <button><span class="sort" data-sort="name">Sortieren nach Name</span></button>
-        <button><span class="sort" data-sort="vp">Sortieren nach VP-Zahl</span></button>
+        Sortieren nach
+        <button><span class="sort" data-sort="name">Name</span></button>
+        <button><span class="sort" data-sort="vp">VP-Zahl</span></button>
+        <button><span class="sort" data-sort="einstellung">Einstellung</span></button>
         <ul class="list"></ul>
       </div>
     </div>
@@ -55,8 +54,8 @@
   filterArray = [],
   katArray = [],
   katBoolArray = [],
-  firstBool = true,
-  katReturnArray = [];
+  kursBoolArray = [],
+  firstBool = true;
 
   function loadVersuche() {
     vArray = myFirebase.convertVStrToArray(sessionStorage.getItem("vArrayStr"));
@@ -65,19 +64,21 @@
     fillListe(vArray);
     setupNamenListener();
     setupFilterListeners();
-    setKategorien();
+    setKategorien(vArray);
+    setKurse(vArray);
+    firstBool = false;
   }
 
   function fillListe(versuche) {
     var options = {
-      valueNames: [ 'name', 'typ', 'dauer', 'vp', 'leiter' ],
-      item: '<li><a href="/vd" class="name"></a><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="leiter"></p><p class="xKurs"></p></li>'
+      valueNames: [ 'name', 'typ', 'dauer', 'vp', 'leiter', 'xKurs', 'einstellung' ],
+      item: '<li><a href="/vd" class="name"></a><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="leiter"></p><p class="xKurs"></p><p class="einstellung"></p></li>'
     };
     var hackerList = new List('hacker-list', options, versuche);
     setExtraText();
-    if(!firstBool) {
-      setKategorien();
-      firstBool = false;
+    if(!firstBool) { //TODO: array übergeben, vorheriges zu beginn leeren
+      setKategorien(versuche);
+      setKurse(versuche);
     }
     setDateInputMinMax(versuche);
   }
@@ -100,14 +101,15 @@
   function filterVersuche() {
     //console.log(semMin, semMax, vpzMin, vpzMax, startDate, endDate);
     filterArray = [];
-    let checkedKats = getCheckedKats();
+    let checkedKats = getCheckedKats(),
+    checkedKurse = getCheckedKurse();
     //console.log(checkedKats);
-    document.getElementById("hacker-list").children[3].innerHTML = "";
+    document.getElementById("hacker-list").children[4].innerHTML = ""; //ul element
     //nach sem, vp, datum einzeln filtern, jeweils vNamen zurückgeben und dann schauen?
     for (let i=0; i<vArray.length; i++) {
       if(semMin <= vArray[i].xSemMax && vArray[i].xSemMin <= semMax) { //TODO logik - done
       //console.log("sem"+i);
-        if(vpzMin <= vArray[i].vp <= vpzMax) {
+        if(vpzMin <= vArray[i].vp && vArray[i].vp <= vpzMax) {
           //console.log("vpz"+i);
           let date1 = new Date(startDate),
           date2 = new Date(endDate),
@@ -117,11 +119,13 @@
           //console.log(date2-vDate2);
           if ((date1-vDate1)<=0 && (date2-vDate2)>=0) { //TODO logik - done
             //console.log("date"+i);
-            //filterArray.push(vArray[i])
             let vArrayTypSplit = vArray[i].typ.split("~");
             for (let j=0; j<vArrayTypSplit.length; j++) {
               if (checkedKats.includes(vArrayTypSplit[j]) || checkedKats.includes(vArray[i].typ) || checkedKats.length === 0) {
-                filterArray.push(vArray[i]);
+                //filterArray.push(vArray[i]);
+                if (checkedKurse.includes(vArray[i].xKurs) || checkedKurse.length == 0) {
+                  filterArray.push(vArray[i]);
+                }
                 break; //keine mehrfacheinträge
               }
             }
@@ -130,6 +134,7 @@
       }
     }
     //katdiv.children[0].innerText
+    console.log(filterArray);
     fillListe(filterArray);
   }
 
@@ -204,8 +209,6 @@
     startDateEl = document.getElementById("startDate"),
     endDateEl = document.getElementById("endDate");
 
-;
-
     for (let i=0; i<versuche.length; i++) {
       //let startDateWip = new Date(versuche[i].xStart),
       //endDateWip = new Date(versuche[i].xEnd);
@@ -258,12 +261,65 @@
     return(returnArray);
   }
 
-  function setKategorien() {
+  function setKurse(versuche) {
+    let kursDiv = document.getElementById("kursDiv"),
+    kursArray = [];
+    kursDiv.innerHTML = "";
+    kursBoolArray = [];
+    for (let i=0; i<versuche.length; i++) {
+      if(!(kursArray.includes(versuche[i].xKurs))) {
+        kursArray.push(versuche[i].xKurs);
+        //console.log(katArray);
+        let itemdiv = document.createElement("DIV"),
+        item = document.createElement("INPUT");
+        itemdiv.class = "inlineP"
+        item.type = "checkbox";
+        item.name = "kurs";
+        item.value = i;
+        itemdiv.appendChild(item);
+        itemdiv.innerHTML += versuche[i].xKurs + "</br>";
+        kursDiv.appendChild(itemdiv);
+        kursBoolArray.push(false);
+      }
+    }
+    setKursListener(); //el wird zerstört und neu geladen
+  }
+
+  function setKursListener() {
+    let kurse = document.getElementsByName("kurs");
+    for (let i=0; i<kurse.length; i++) {
+      kurse[i].addEventListener("input", function() {
+        kursBoolArray[i] = kurse[i].checked;
+        console.log(kurse, kursBoolArray);
+      })
+    }
+  }
+
+  function getCheckedKurse() {
+    let kursDiv = document.getElementById("kursDiv").children,
+    kursReturnArray = [];
+    for (let i=0; i<kursBoolArray.length; i++) {
+      if (kursBoolArray[i]) {
+        kursReturnArray.push(kursDiv[i].innerText.slice(0, -1));
+      }
+    }
+    return(kursReturnArray);
+  }
+
+  function setKategorien(versuche) {
     let katDiv = document.getElementById("katDiv"),
     katSplitArray = [];
+    katArray = [];
     katDiv.innerHTML = "";
-    for (let i=0; i<vArray.length; i++) { //unique kats
-      let smallSplitArray=vArray[i].typ.split("~");
+    //console.log(katBoolArray);
+    if (!(katBoolArray.includes(true))) {
+      //console.log(vArray);
+      versuche = vArray;
+    }
+    katBoolArray = []; //buggy
+    //console.log(versuche);
+    for (let i=0; i<versuche.length; i++) { //unique kats
+      let smallSplitArray=versuche[i].typ.split("~");
       for (let j=0; j<smallSplitArray.length; j++) {
         katSplitArray.push(smallSplitArray[j]);
       }
@@ -272,7 +328,6 @@
     for (let i=0; i<katSplitArray.length; i++) {
       if (!(katArray.includes(katSplitArray[i]))) {
         katArray.push(katSplitArray[i]);
-        //console.log(katArray);
         let itemdiv = document.createElement("DIV"),
         item = document.createElement("INPUT");
         itemdiv.class = "inlineP"
@@ -285,9 +340,8 @@
         katBoolArray.push(false);
       }
     }
-    if(firstBool) {
-      setKatListener();
-    }
+    setKatListener();
+    //listener werden bei neu laden gelöscht, weil el neu erstellt -> neu setzen
   }
 
   function setKatListener() {
@@ -301,7 +355,7 @@
   }
 
   function getCheckedKats() {
-    let katDiv = document.getElementById("katDiv").children;
+    let katDiv = document.getElementById("katDiv").children,
     katReturnArray = [];
     for (let i=0; i<katBoolArray.length; i++) {
       if (katBoolArray[i]) {
@@ -330,6 +384,16 @@
     let leiter = document.getElementsByClassName("leiter");
     for (let i=0; i<leiter.length; i++) {
       leiter[i].innerText = "Leiter: " + leiter[i].innerText;
+    }
+
+    let kurse = document.getElementsByClassName("xKurs");
+    for (let i=0; i<kurse.length; i++) {
+      kurse[i].innerText = "Kurse: " + kurse[i].innerText;
+    }
+
+    let einstellung = document.getElementsByClassName("einstellung");
+    for (let i=0; i<einstellung.length; i++) {
+      einstellung[i].innerText = "Einstellungsdatum: " + einstellung[i].innerText;
     }
   }
 
