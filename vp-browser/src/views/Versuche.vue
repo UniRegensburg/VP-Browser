@@ -52,7 +52,6 @@
   vpzMin = 0.0,
   vpzMax = 99.0,
   filterArray = [],
-  katArray = [],
   katBoolArray = [],
   kursBoolArray = [],
   firstBool = true;
@@ -226,7 +225,7 @@
   function sortNumbers(numArray) {
     numArray.sort(function(a, b){return a-b});
     //https://www.w3schools.com/jsref/jsref_sort.asp
-    console.log(numArray);
+    //console.log(numArray);
     return(numArray);
   }
 
@@ -312,26 +311,59 @@
   }
 
   function setKurse(versuche) {
+    //console.log(versuche);
     let kursDiv = document.getElementById("kursDiv"),
-    kursArray = [];
+    kursArray = [],
+    kursCountArray = [],
+    kursSortedCounts = [];
     kursDiv.innerHTML = "";
     kursBoolArray = [];
     for (let i=0; i<versuche.length; i++) {
-      if(!(kursArray.includes(versuche[i].xKurs))) {
+      if(!(kursArray.includes(versuche[i].xKurs))) { // unique kurse
         kursArray.push(versuche[i].xKurs);
-        //console.log(katArray);
-        let itemdiv = document.createElement("DIV"),
-        item = document.createElement("INPUT");
-        itemdiv.class = "inlineP"
-        item.type = "checkbox";
-        item.name = "kurs";
-        item.value = i;
-        itemdiv.appendChild(item);
-        itemdiv.innerHTML += versuche[i].xKurs + "</br>";
-        kursDiv.appendChild(itemdiv);
-        kursBoolArray.push(false);
+
+        let kursCountWip = [];
+        kursCountWip.push(versuche[i].xKurs);
+        kursCountWip.push(1);
+        kursCountArray.push(kursCountWip);
+      } else {
+        for (let j=0; j<kursCountArray.length; j++) {
+          if(versuche[i].xKurs == kursCountArray[j][0]) {
+            kursCountArray[j][1] += 1; //add count to unqie
+          }
+        }
       }
     }
+
+    for (let i=0; i<kursCountArray.length; i++) {
+      kursSortedCounts.push(kursCountArray[i][1]);
+    }
+    kursSortedCounts = sortCounts(kursSortedCounts);
+
+    for (let i=0; i<kursSortedCounts.length; i++) {
+      for (let j=0; j<kursCountArray.length; j++) {
+        if (kursSortedCounts[i] == kursCountArray[j][1]) {
+          let index = 0;
+          for (let k=0; k<kursArray.length; k++) {
+            if (kursCountArray[j][0] == kursArray[k]) { //TODO wenn gechecked -> gechecked setzen
+              let itemdiv = document.createElement("DIV"),
+              item = document.createElement("INPUT");
+              itemdiv.class = "inlineP"
+              item.type = "checkbox";
+              item.name = "kurs";
+              item.value = i;
+              itemdiv.appendChild(item);
+              itemdiv.innerHTML += kursArray[k] + "</br>";
+              kursDiv.appendChild(itemdiv);
+              kursBoolArray.push(false);
+              index = k;
+            }
+          }
+          kursArray.splice(index, 1);
+        }
+      }
+    }
+
     setKursListener(); //el wird zerstört und neu geladen
   }
 
@@ -340,7 +372,7 @@
     for (let i=0; i<kurse.length; i++) {
       kurse[i].addEventListener("input", function() {
         kursBoolArray[i] = kurse[i].checked;
-        console.log(kurse, kursBoolArray);
+        //console.log(kurse, kursBoolArray);
       })
     }
   }
@@ -358,17 +390,20 @@
 
   function setKategorien(versuche) {
     let katDiv = document.getElementById("katDiv"),
-    katSplitArray = [];
+    katSplitArray = [],
+    katSortedCounts = [],
+    katCountArray = [],
     katArray = [];
     katDiv.innerHTML = "";
-    //console.log(katBoolArray);
-    if (!(katBoolArray.includes(true))) {
+    console.log(kursBoolArray);
+    if (!(katBoolArray.includes(true) || kursBoolArray.includes(true))) {
+      //kurs damit bei kurs bool und kein kat nicht ganze kat kommt
       //console.log(vArray);
       versuche = vArray;
     }
-    katBoolArray = []; //buggy
+    katBoolArray = [];
     //console.log(versuche);
-    for (let i=0; i<versuche.length; i++) { //unique kats
+    for (let i=0; i<versuche.length; i++) { //multi kats aufteilen
       let smallSplitArray=versuche[i].typ.split("~");
       for (let j=0; j<smallSplitArray.length; j++) {
         katSplitArray.push(smallSplitArray[j]);
@@ -376,20 +411,52 @@
     }
     //console.log(katSplitArray);
     for (let i=0; i<katSplitArray.length; i++) {
-      if (!(katArray.includes(katSplitArray[i]))) {
+      if (!(katArray.includes(katSplitArray[i]))) {  //unique kats
+
+        let katCountWip = [];
+        katCountWip.push(katSplitArray[i]);
+        katCountWip.push(1);
+        katCountArray.push(katCountWip);
+
         katArray.push(katSplitArray[i]);
-        let itemdiv = document.createElement("DIV"),
-        item = document.createElement("INPUT");
-        itemdiv.class = "inlineP"
-        item.type = "checkbox";
-        item.name = "kat";
-        item.value = i;
-        itemdiv.appendChild(item);
-        itemdiv.innerHTML += katSplitArray[i] + "</br>";
-        katDiv.appendChild(itemdiv);
-        katBoolArray.push(false);
+      } else {
+        for (let j=0; j<katCountArray.length; j++) {
+          if(katSplitArray[i] == katCountArray[j][0]) {
+            katCountArray[j][1] += 1; //add count to unqie
+          }
+        }
       }
     }
+    //console.log(katCountArray);
+
+    for (let i=0; i<katCountArray.length; i++) {
+      katSortedCounts.push(katCountArray[i][1]);
+    }
+    katSortedCounts = sortCounts(katSortedCounts);
+    for (let i=0; i<katSortedCounts.length; i++) {
+      for (let j=0; j<katCountArray.length; j++) {
+        if (katSortedCounts[i] == katCountArray[j][1]) {
+          let index = 0;
+          for (let k=0; k<katArray.length; k++) {
+            if (katCountArray[j][0] == katArray[k]) { //TODO wenn gechecked -> gechecked setzen
+              let itemdiv = document.createElement("DIV"),
+              item = document.createElement("INPUT");
+              itemdiv.class = "inlineP"
+              item.type = "checkbox";
+              item.name = "kat";
+              item.value = i;
+              itemdiv.appendChild(item);
+              itemdiv.innerHTML += katArray[k] + "</br>";
+              katDiv.appendChild(itemdiv);
+              katBoolArray.push(false);
+              index = k;
+            }
+          }
+          katArray.splice(index, 1);
+        }
+      }
+    }
+
     setKatListener();
     //listener werden bei neu laden gelöscht, weil el neu erstellt -> neu setzen
   }
@@ -413,6 +480,13 @@
       }
     }
     return(katReturnArray);
+  }
+
+  function sortCounts(numArray) { //groß zu klein, sortNumbers klein zu groß
+    numArray.sort(function(a, b){return b-a});
+    //https://www.w3schools.com/jsref/jsref_sort.asp
+    //console.log(numArray);
+    return(numArray);
   }
 
   function setExtraText() {
