@@ -54,7 +54,10 @@
   filterArray = [],
   katBoolArray = [],
   kursBoolArray = [],
-  firstBool = true;
+  firstBool = true,
+  katKursCutOf = 1,
+  katShowMore = false,
+  kursShowMore = false;
 
   function loadVersuche() {
     vArray = myFirebase.convertVStrToArray(sessionStorage.getItem("vArrayStr"));
@@ -75,7 +78,7 @@
     };
     var hackerList = new List('hacker-list', options, versuche);
     setExtraText();
-    if(!firstBool) { //TODO: array übergeben, vorheriges zu beginn leeren
+    if(!firstBool) { //TODO: array übergeben, vorheriges zu beginn leeren - done
       setKategorien(versuche);
       setKurse(versuche);
     }
@@ -311,14 +314,16 @@
   }
 
   function setKurse(versuche) {
-    //console.log(versuche);
+    console.log(versuche);
     let kursDiv = document.getElementById("kursDiv"),
     kursArray = [],
     kursCountArray = [],
     kursSortedCounts = [];
     kursDiv.innerHTML = "";
     kursBoolArray = [];
+
     for (let i=0; i<versuche.length; i++) {
+      console.log(versuche[i]);
       if(!(kursArray.includes(versuche[i].xKurs))) { // unique kurse
         kursArray.push(versuche[i].xKurs);
 
@@ -340,23 +345,29 @@
     }
     kursSortedCounts = sortCounts(kursSortedCounts);
 
+    console.log(kursArray);
+
     for (let i=0; i<kursSortedCounts.length; i++) {
       for (let j=0; j<kursCountArray.length; j++) {
         if (kursSortedCounts[i] == kursCountArray[j][1]) {
           let index = 0;
           for (let k=0; k<kursArray.length; k++) {
             if (kursCountArray[j][0] == kursArray[k]) { //TODO wenn gechecked -> gechecked setzen
-              let itemdiv = document.createElement("DIV"),
-              item = document.createElement("INPUT");
-              itemdiv.class = "inlineP"
-              item.type = "checkbox";
-              item.name = "kurs";
-              item.value = i;
-              itemdiv.appendChild(item);
-              itemdiv.innerHTML += kursArray[k] + "</br>";
-              kursDiv.appendChild(itemdiv);
-              kursBoolArray.push(false);
-              index = k;
+            console.log(kursShowMore);
+              if (i<katKursCutOf || kursShowMore) {
+                console.log(kursArray[k]);
+                let itemdiv = document.createElement("DIV"),
+                item = document.createElement("INPUT");
+                itemdiv.class = "inlineP"
+                item.type = "checkbox";
+                item.name = "kurs";
+                item.value = i;
+                itemdiv.appendChild(item);
+                itemdiv.innerHTML += kursArray[k] + "</br>";
+                kursDiv.appendChild(itemdiv);
+                kursBoolArray.push(false);
+                index = k;
+              }
             }
           }
           kursArray.splice(index, 1);
@@ -364,7 +375,39 @@
       }
     }
 
+    if (kursShowMore) {
+      createKursShowLess(versuche);
+    } else {
+      createKursShowMore(versuche);
+    }
+
     setKursListener(); //el wird zerstört und neu geladen
+  }
+
+  function createKursShowLess(versuche) {
+    let kursDiv = document.getElementById("kursDiv"),
+    btn = document.createElement("BUTTON");
+    btn.innerText = "Zeig weniger";
+
+    kursDiv.appendChild(btn);
+
+    btn.addEventListener("click", function() {
+      kursShowMore = false;
+      setKurse(versuche);
+    });
+  }
+
+  function createKursShowMore(versuche) {
+    let kursDiv = document.getElementById("kursDiv"),
+    btn = document.createElement("BUTTON");
+    btn.innerText = "Zeig mehr";
+
+    kursDiv.appendChild(btn);
+
+    btn.addEventListener("click", function() {
+      kursShowMore = true;
+      setKurse(versuche);
+    });
   }
 
   function setKursListener() {
@@ -389,13 +432,14 @@
   }
 
   function setKategorien(versuche) {
+    //console.log(versuche);
     let katDiv = document.getElementById("katDiv"),
     katSplitArray = [],
     katSortedCounts = [],
     katCountArray = [],
     katArray = [];
     katDiv.innerHTML = "";
-    console.log(kursBoolArray);
+    //console.log(kursBoolArray);
     if (!(katBoolArray.includes(true) || kursBoolArray.includes(true))) {
       //kurs damit bei kurs bool und kein kat nicht ganze kat kommt
       //console.log(vArray);
@@ -404,12 +448,13 @@
     katBoolArray = [];
     //console.log(versuche);
     for (let i=0; i<versuche.length; i++) { //multi kats aufteilen
+      console.log(versuche[i]);
       let smallSplitArray=versuche[i].typ.split("~");
       for (let j=0; j<smallSplitArray.length; j++) {
         katSplitArray.push(smallSplitArray[j]);
       }
     }
-    //console.log(katSplitArray);
+    console.log(katSplitArray);
     for (let i=0; i<katSplitArray.length; i++) {
       if (!(katArray.includes(katSplitArray[i]))) {  //unique kats
 
@@ -439,17 +484,20 @@
           let index = 0;
           for (let k=0; k<katArray.length; k++) {
             if (katCountArray[j][0] == katArray[k]) { //TODO wenn gechecked -> gechecked setzen
-              let itemdiv = document.createElement("DIV"),
-              item = document.createElement("INPUT");
-              itemdiv.class = "inlineP"
-              item.type = "checkbox";
-              item.name = "kat";
-              item.value = i;
-              itemdiv.appendChild(item);
-              itemdiv.innerHTML += katArray[k] + "</br>";
-              katDiv.appendChild(itemdiv);
-              katBoolArray.push(false);
-              index = k;
+              if (i<katKursCutOf || katShowMore) { //i weil erste schleife items zählt
+                //console.log(katArray[k]);
+                let itemdiv = document.createElement("DIV"),
+                item = document.createElement("INPUT");
+                itemdiv.class = "inlineP"
+                item.type = "checkbox";
+                item.name = "kat";
+                item.value = i;
+                itemdiv.appendChild(item);
+                itemdiv.innerHTML += katArray[k] + "</br>";
+                katDiv.appendChild(itemdiv);
+                katBoolArray.push(false);
+                index = k;
+              }
             }
           }
           katArray.splice(index, 1);
@@ -457,8 +505,41 @@
       }
     }
 
+
+    if (katShowMore) {
+      createKatShowLess(versuche);
+    } else {
+      createKatShowMore(versuche);
+    }
+
     setKatListener();
     //listener werden bei neu laden gelöscht, weil el neu erstellt -> neu setzen
+  }
+
+  function createKatShowLess(versuche) {
+    let katDiv = document.getElementById("katDiv"),
+    btn = document.createElement("BUTTON");
+    btn.innerText = "Zeig weniger";
+
+    katDiv.appendChild(btn);
+
+    btn.addEventListener("click", function() {
+      katShowMore = false;
+      setKategorien(versuche);
+    });
+  }
+
+  function createKatShowMore(versuche) {
+    let katDiv = document.getElementById("katDiv"),
+    btn = document.createElement("BUTTON");
+    btn.innerText = "Zeig mehr";
+
+    katDiv.appendChild(btn);
+
+    btn.addEventListener("click", function() {
+      katShowMore = true;
+      setKategorien(versuche);
+    });
   }
 
   function setKatListener() {
