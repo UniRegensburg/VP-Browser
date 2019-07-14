@@ -24,7 +24,7 @@
     </div>
     <div id="vlRechts">
       <h3>Einträge</h3>
-      <div id="hacker-list">
+      <div id="vListDiv">
         <input class="search" placeholder="Suche"/>
         Sortieren nach
         <button><span class="sort" data-sort="name">Name</span></button>
@@ -79,7 +79,7 @@
       valueNames: [ 'name', 'typ', 'dauer', 'vp', 'leiter', 'xKurs', 'einstellung' ],
       item: '<li><a href="/vd" class="name"></a><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="leiter"></p><p class="xKurs"></p><p class="einstellung"></p></li>'
     };
-    var hackerList = new List('hacker-list', options, versuche);
+    var vList = new List('vListDiv', options, versuche);
     setExtraText();
     if(!firstBool) { //TODO: array übergeben, vorheriges zu beginn leeren - done
       setKategorien(versuche);
@@ -112,7 +112,7 @@
     let checkedKats = getCheckedKats(),
     checkedKurse = getCheckedKurse();
     //console.log(checkedKats);
-    document.getElementById("hacker-list").children[4].innerHTML = ""; //ul element
+    document.getElementById("vListDiv").children[4].innerHTML = ""; //ul element
     //nach sem, vp, datum einzeln filtern, jeweils vNamen zurückgeben und dann schauen?
     for (let i=0; i<vArray.length; i++) {
       if(semMin <= vArray[i].xSemMax && vArray[i].xSemMin <= semMax) { //TODO logik - done
