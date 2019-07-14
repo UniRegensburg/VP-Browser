@@ -7,7 +7,7 @@ function Firebase() {
 
 let testlvs = "";
 
-Firebase.prototype.getUserDoc = function() {
+Firebase.prototype.getUserDoc = function() { //alt
   let db = firebase.firestore();
   db.collection("nutzer").get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -38,7 +38,7 @@ Firebase.prototype.pushNewUser = function() {
   });
 };
 
-Firebase.prototype.writeData = function() {
+Firebase.prototype.writeData = function() { //bsp fkt
   let db = firebase.firestore(),
   docName = sessionStorage.getItem("nutzerName");
 
@@ -49,6 +49,19 @@ Firebase.prototype.writeData = function() {
       //console.log("Document successfully updated!");
   });
 };
+
+Firebase.prototype.setBenachDB = function(num) { //bsp fkt
+  let db = firebase.firestore(),
+  docName = sessionStorage.getItem("nutzerName");
+
+  db.collection("nutzer").doc(docName).update({
+      benach: num
+  })
+  .then(function() {
+      //console.log("Document successfully updated!");
+  });
+};
+
 
 Firebase.prototype.getUser = function() {
   let db = firebase.firestore(),
