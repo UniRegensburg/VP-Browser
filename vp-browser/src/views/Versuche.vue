@@ -59,6 +59,9 @@
   katShowMore = false,
   kursShowMore = false;
 
+  //TODO: / bugs: kat oder kurs auswahl zeigt beim gegenpart alle einträge
+  // list sort fkt mit gefiltertern versuchen nicht - 2x filtern fkt - notlösung
+
   function loadVersuche() {
     vArray = myFirebase.convertVStrToArray(sessionStorage.getItem("vArrayStr"));
     //console.log(vArray);
@@ -99,6 +102,7 @@
     let filterButton = document.getElementById("updateFilter");
     filterButton.addEventListener("click", function() {
       filterVersuche();
+      filterVersuche(); //filter list sort bugfix? - ja - warum?
     })
   }
 
@@ -138,7 +142,7 @@
       }
     }
     //katdiv.children[0].innerText
-    console.log(filterArray);
+    //console.log(filterArray);
     fillListe(filterArray);
   }
 
@@ -287,7 +291,7 @@
     let returnArray = [],
     smallest,
     index;
-    //sconsole.log(dateArray);
+    //console.log(dateArray);
     while (dateArray.length > 0) {
       smallest = dateArray[0],
       index = 0;
@@ -313,8 +317,8 @@
     return(returnArray);
   }
 
-  function setKurse(versuche) { //TODO liste zeigt alle einträge - todo? -> checked bug
-    console.log(versuche);
+  function setKurse(versuche) { //TODO checked bug - done
+    //console.log(versuche);
     let kursDiv = document.getElementById("kursDiv"),
     kursArray = [],
     kursCountArray = [],
@@ -361,17 +365,18 @@
     }
     kursSortedCounts = sortCounts(kursSortedCounts);
 
-    console.log(kursArray);
+    //console.log(kursArray);
+    console.log(wipBool);
 
     for (let i=0; i<kursSortedCounts.length; i++) {
       for (let j=0; j<kursCountArray.length; j++) {
         if (kursSortedCounts[i] == kursCountArray[j][1]) {
           let index = 0;
           for (let k=0; k<kursArray.length; k++) {
-            if (kursCountArray[j][0] == kursArray[k]) { //TODO wenn gechecked -> gechecked setzen
-            console.log(kursShowMore);
+            if (kursCountArray[j][0] == kursArray[k]) { //TODO wenn gechecked -> gechecked setzen - done
+            //console.log(kursShowMore);
               if (i<katKursCutOf || kursShowMore) {
-                console.log(kursArray[k]);
+                //console.log(kursArray[k]);
                 let itemdiv = document.createElement("DIV"),
                 item = document.createElement("INPUT"),
                 singleBool = [],
@@ -380,11 +385,23 @@
                 item.type = "checkbox";
                 item.name = "kurs";
                 item.value = i;
-/*              //TODO checked fkt nicht
+                //item.checked = true; //fkt nicht
+
+                itemdiv.appendChild(item);
+                itemdiv.innerHTML += kursArray[k] + "</br>";
+                kursDiv.appendChild(itemdiv);
+
                 for (let l=0; l<wipBool.length; l++) {
                   if (wipBool[l][1] == kursArray[k] && wipBool[l][0]) {
-                    item.checked = true; //fkt nicht
-                    //item.disabled = true; //fkt, fkt nicht nach appenden
+                    //console.log(kursDiv.children[0].children[0]);
+                    for (let p=0; p<kursDiv.children.length; p++) { //-1?
+                      //console.log(kursArray[k], kursDiv.children[p].innerText.slice(0, -1));
+                      if (kursArray[k] == kursDiv.children[p].innerText.slice(0, -1)) {
+                        kursDiv.children[p].children[0].checked = true;
+                      }
+                    }
+                    //kursDiv.children[l].children[0].checked = true;
+                    //k falsche werte, l out of range bei kat, hier nicht, evtl weil test sample hier nur 2
                     singleBool.push(true);
                     checkedBool = true;
                   }
@@ -392,11 +409,8 @@
                 if (!checkedBool) {
                   singleBool.push(false);
                 }
-*/
-                itemdiv.appendChild(item);
-                itemdiv.innerHTML += kursArray[k] + "</br>";
-                kursDiv.appendChild(itemdiv);
-                singleBool.push(false);
+
+                //singleBool.push(false);
                 singleBool.push(kursArray[k])
                 kursBoolArray.push(singleBool);
                 index = k;
@@ -448,7 +462,8 @@
     for (let i=0; i<kurse.length; i++) {
       kurse[i].addEventListener("input", function() {
         kursBoolArray[i][0] = kurse[i].checked;
-        console.log(kursBoolArray);
+        //console.log(kursBoolArray);
+        //kurse[i].checked = true;
       })
     }
   }
@@ -466,7 +481,7 @@
 
   function setKategorien(versuche) {
   //TODO nach zeig mehr weniger lädt hier imemr alle v, kurse bleibt richtig?
-  //oder mehr -> wieder alle besser? -> checked bug?
+  //oder mehr -> wieder alle besser? -> checked bug? - war checked - done
     //console.log(versuche);
     let katDiv = document.getElementById("katDiv"),
     katSplitArray = [],
@@ -483,14 +498,14 @@
     for (let i=0; i<kursBoolArray.length; i++) {
       onlyBools.push(kursBoolArray[i][0]);
     }
-    //console.log(kursBoolArray);
+    console.log(onlyBools);
     if (!(onlyBools.includes(true))) {
       //kurs damit bei kurs bool und kein kat nicht ganze kat kommt
       //console.log(vArray);
       versuche = vArray;
     }
     katBoolArray = [];
-    //console.log(versuche);
+    console.log(versuche);
     for (let i=0; i<versuche.length; i++) { //multi kats aufteilen
       //console.log(versuche[i]);
       let smallSplitArray=versuche[i].typ.split("~");
@@ -516,7 +531,8 @@
         }
       }
     }
-    //console.log(katCountArray);
+    console.log(katArray);
+    console.log(wipBool);
 
     for (let i=0; i<katCountArray.length; i++) {
       katSortedCounts.push(katCountArray[i][1]);
@@ -527,20 +543,41 @@
         if (katSortedCounts[i] == katCountArray[j][1]) {
           let index = 0;
           for (let k=0; k<katArray.length; k++) {
-            if (katCountArray[j][0] == katArray[k]) { //TODO wenn gechecked -> gechecked setzen
+            if (katCountArray[j][0] == katArray[k]) { //TODO wenn gechecked -> gechecked setzen - done
               if (i<katKursCutOf || katShowMore) { //i weil erste schleife items zählt
                 //console.log(katArray[k]);
                 let itemdiv = document.createElement("DIV"),
                 item = document.createElement("INPUT"),
-                singleBool = [];
+                singleBool = [],
+                checkedBool = false;
                 itemdiv.class = "inlineP"
                 item.type = "checkbox";
                 item.name = "kat";
                 item.value = i;
+
                 itemdiv.appendChild(item);
                 itemdiv.innerHTML += katArray[k] + "</br>";
                 katDiv.appendChild(itemdiv);
-                singleBool.push(false);
+
+                for (let l=0; l<wipBool.length; l++) {
+                  if (wipBool[l][1] == katArray[k] && wipBool[l][0]) {
+                    //console.log(kursDiv.children[0].children[0]);
+                    for (let p=0; p<katDiv.children.length; p++) { //-1?
+                      //console.log(katArray[k], katDiv.children[p].innerText.slice(0, -1));
+                      if (katArray[k] == katDiv.children[p].innerText.slice(0, -1)) {
+                        katDiv.children[p].children[0].checked = true;
+                      }
+                    }
+                    //katDiv.children[l].children[0].checked = true;
+                    singleBool.push(true);
+                    checkedBool = true;
+                  }
+                }
+                if (!checkedBool) {
+                  singleBool.push(false);
+                }
+
+                //singleBool.push(false);
                 singleBool.push(katArray[k]);
                 katBoolArray.push(singleBool);
                 index = k;
@@ -594,7 +631,7 @@
     for (let i=0; i<kats.length; i++) {
       kats[i].addEventListener("input", function() {
         katBoolArray[i][0] = kats[i].checked;
-        console.log(katBoolArray);
+        //console.log(katBoolArray);
       })
     }
   }
@@ -658,10 +695,10 @@
 
   function listenForNames() {
     let namen = document.getElementsByClassName("name");
-    console.log(event);
+    //console.log(event);
     vName = event.path[0].innerText;
     vName = vName.replace(" ", "_");
-    console.log(vName);
+    //console.log(vName);
     sessionStorage.setItem('versuch', vName);
   }
 
