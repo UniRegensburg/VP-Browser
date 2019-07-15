@@ -50,7 +50,7 @@ Firebase.prototype.writeData = function() { //bsp fkt
   });
 };
 
-Firebase.prototype.setBenachDB = function(num) { //bsp fkt
+Firebase.prototype.setBenachDB = function(num) {
   let db = firebase.firestore(),
   docName = sessionStorage.getItem("nutzerName");
 
@@ -62,6 +62,28 @@ Firebase.prototype.setBenachDB = function(num) { //bsp fkt
   });
 };
 
+Firebase.prototype.userVAbmelden = function(str) { //bsp fkt
+  let db = firebase.firestore(),
+  docName = sessionStorage.getItem("nutzerName");
+
+  db.collection("nutzer").doc(docName).update({
+      lvs: str
+  })
+  .then(function() {
+      //console.log("Document successfully updated!");
+  });
+};
+
+Firebase.prototype.lockedSesUpdate = function(str, name) { //bsp fkt
+  let db = firebase.firestore();
+
+  db.collection("versuche").doc(name).update({
+      lockedSes: str
+  })
+  .then(function() {
+      //console.log("Document successfully updated!");
+  });
+};
 
 Firebase.prototype.getUser = function() {
   let db = firebase.firestore(),
@@ -100,7 +122,7 @@ Firebase.prototype.getAllVersuche = function() { // TODO: schöner mit json.stri
       versuchsArray.push(singleV);
     });
     sessionStorage.setItem("vArrayStr", versuchsArray);
-    //console.log(sessionStorage.getItem("vArrayStr"));
+    console.log(sessionStorage.getItem("vArrayStr"));
   });
 }
 

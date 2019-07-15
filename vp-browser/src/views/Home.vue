@@ -35,6 +35,7 @@
     dateArray = [];
     listV = [];
     userV = userVStr.split("~");
+    removeEmptyLvs();
     for (let i=0; i< userV.length; i++) {
       userV[i] = userV[i].split("+");
       let date = new Date(userV[i][1]);
@@ -56,6 +57,14 @@
     }
     fillListe();
     setupNamenListener();
+  }
+
+  function removeEmptyLvs() {
+    for (let i=0; i<userV.length; i++) {
+      if (userV[i].length == 0) {
+        userV.splice(i, 1);
+      }
+    }
   }
 
   function fillListe() { //weitere items von versuch anzeigen?

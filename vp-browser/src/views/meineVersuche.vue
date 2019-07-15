@@ -8,6 +8,7 @@
       <button><span class="sort" data-sort="termin" id="terminButton">Termin</span></button>
       <ul class="list"></ul>
     </div>
+    <button id="abmeldeB">von ausgewählten Versuchen abmelden</button>
   </div>
 </template>
 
@@ -21,7 +22,8 @@
   let myFirebase = new Firebase(),
   userV = [],
   listV = [],
-  vName = "";
+  vName = "",
+  vArray = [];
 
   function loadMV() {
     getUserVFromDB();
@@ -29,6 +31,39 @@
     setupNamenListener();
     setupSearchUpdate();
     sortByDate(); //setzt direkt listener
+    setAbmeldeButton();
+  }
+
+  function setAbmeldeButton() {
+    let button = document.getElementById("abmeldeB"),
+    lvsStr = sessionStorage.getItem("lvs");
+    console.log(lvsStr);
+    button.addEventListener("click", function() {
+      for (let i=0; i<userV.length; i++) {
+        if (userV[i][2]) {
+          console.log(userV[i]);
+          let wipStr = userV[i][0] + "+" + userV[i][1];
+          console.log(wipStr);
+          lvsStr = lvsStr.replace(wipStr, "");
+          console.log(lvsStr);
+          sessionStorage.setItem("lvs", lvsStr);
+          myFirebase.userVAbmelden(lvsStr);
+          //a_versuch+2019-01-17 12:00~d+2019-01-17 10:00
+          for (let j=0; j<vArray.length; j++) {
+            if (vArray[j].name == userV[i][0]) {
+              let lockedSesStr = vArray[j].lockedSes;
+              console.log(lockedSesStr);
+              lockedSesStr = lockedSesStr.replace(userV[i][1], "");
+              console.log(lockedSesStr);
+              vArray[j].lockedSes = lockedSesStr;
+              myFirebase.lockedSesUpdate(lockedSesStr, vArray[j].name);
+            }
+          }
+        }
+      }
+      getUserVFromDB();
+      fillListe();
+    });
   }
 
   function setupSearchUpdate() {
@@ -78,11 +113,12 @@
   }
 
   function getUserVFromDB() {
-    let userVStr = sessionStorage.getItem("lvs"),
-    vArray = myFirebase.convertVStrToArray(sessionStorage.getItem("vArrayStr"));
+    let userVStr = sessionStorage.getItem("lvs");
 
+    vArray = myFirebase.convertVStrToArray(sessionStorage.getItem("vArrayStr"));
     listV = [];
     userV = userVStr.split("~"); //versucht nach ersten durchlauf mit etwas nicht vorhandenem zu splitten
+    removeEmptyLvs();
     for (let i=0; i<userV.length; i++) {
       userV[i] = userV[i].split("+");
       //versucht nach ersten durchlauf mit etwas nicht vorhandenem zu splitten
@@ -95,6 +131,14 @@
       }
     }
     //console.log(userV);
+  }
+
+  function removeEmptyLvs() {
+    for (let i=0; i<userV.length; i++) {
+      if (userV[i].length == 0) {
+        userV.splice(i, 1);
+      }
+    }
   }
 
   function setExtraText() {

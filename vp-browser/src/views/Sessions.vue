@@ -32,6 +32,18 @@
     let lsArray = lockedSessionsString.split("~");
     //console.log(sArray);
 
+    for (let i=0; i<sArray.length; i++) {
+      if (sArray[i].length == 0) {
+        sArray.splice(i, 1);
+      }
+    }
+
+    for (let i=0; i<lsArray.length; i++) {
+      if (lsArray[i].length == 0) {
+        lsArray.splice(i, 1);
+      }
+    }
+
     let sessionDiv = document.getElementById("sessionSlots");
 
     for (let i=0; i<sArray.length; i++) {
