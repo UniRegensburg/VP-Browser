@@ -62,7 +62,7 @@ Firebase.prototype.setBenachDB = function(num) {
   });
 };
 
-Firebase.prototype.userVAbmelden = function(str) { //bsp fkt
+Firebase.prototype.userVAnAbmelden = function(str) { //bsp fkt
   let db = firebase.firestore(),
   docName = sessionStorage.getItem("nutzerName");
 

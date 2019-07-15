@@ -47,7 +47,7 @@
           lvsStr = lvsStr.replace(wipStr, "");
           console.log(lvsStr);
           sessionStorage.setItem("lvs", lvsStr);
-          myFirebase.userVAbmelden(lvsStr);
+          myFirebase.userVAnAbmelden(lvsStr);
           //a_versuch+2019-01-17 12:00~d+2019-01-17 10:00
           for (let j=0; j<vArray.length; j++) {
             if (vArray[j].name == userV[i][0]) {
