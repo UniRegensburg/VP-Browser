@@ -38,7 +38,7 @@
   document.getElementById("mvDiv").children[3].innerHTML = ""; //ul element
   //console.log(listV);
   var options = {
-    valueNames: [ 'name', 'termin', 'raum', 'typ', 'dauer', 'vp', 'leiter' ],
+    valueNames: [ 'name', 'termin', 'raum', 'typ', 'dauer', 'leiter' ],
     item: '<li><a href="/vd" class="name"></a><p class="termin"></p><p class="raum"></p><p class="typ"></p><p class="dauer"></p><p class="leiter"></p></li>'
   };
   var mvDiv = new List('mvDiv', options, listV);
@@ -62,7 +62,7 @@
         }
       }
     }
-    console.log(userV);
+    //console.log(userV);
   }
 
   function setExtraText() {

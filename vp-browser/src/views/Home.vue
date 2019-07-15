@@ -3,9 +3,9 @@
     <h1>Home</h1>
     <div>
       <h3>Nächster Versuch</h3>
-      <p><router-link to="/vd">Name</router-link></p>
-      <p>Zeit</p>
-      <p>Raum</p>
+      <div id="nvDiv">
+        <ul class="list"></ul>
+      </div>
     </div>
     <br>
     <router-link to="versuche">Versuchsliste</router-link>
@@ -21,34 +21,103 @@
   //console.log("home");
   import Firebase from '../js/Firebase';
 
-  let myFirebase = new Firebase();
+  let myFirebase = new Firebase(),
+  userV = [],
+  listV = [];
+
   function initHome() {
-    //let db = firebase.firestore();
-    test();
-    //myFirebase.getAllVersuche();
-    //myFirebase.getUserDoc();
-    //myFirebase.pushNewUser();
-    //myFirebase.writeData();
-    console.log(sessionStorage.getItem("nutzerName"));
-    //let vArrayStr = sessionStorage.getItem("vArrayStr");
-    //console.log(vArrayStr);
-    //let vArray = myFirebase.convertVStrToArray(vArrayStr);
-    //console.log(vArray);
     getFirstVersuch();
   }
 
   function getFirstVersuch() {
-    //let userData = myFirebase.getUser();
-    //console.log(userData);
-    //getFirstFromVStr(userData.lvs);
+    let userVStr = sessionStorage.getItem("lvs"),
+    vArray = myFirebase.convertVStrToArray(sessionStorage.getItem("vArrayStr")),
+    dateArray = [];
+    listV = [];
+    userV = userVStr.split("~");
+    for (let i=0; i< userV.length; i++) {
+      userV[i] = userV[i].split("+");
+      let date = new Date(userV[i][1]);
+      dateArray.push(date)
+    }
+    dateArray = sortDates(dateArray);
+    for (let i=0; i<dateArray.length; i++) {
+      for (let j=0; j<userV.length; j++) {
+        if ((dateArray[i] - new Date(userV[j][1])) == 0) {
+          //console.log(userV[j]);
+          for (let k=0; k<vArray.length; k++) {
+            if ((userV[j][0] == vArray[k].name) && (listV.length == 0)) {
+              vArray[k]["termin"] = userV[j][1];
+              listV.push(vArray[k]);
+            }
+          }
+        }
+      }
+    }
+    fillListe();
+    setupNamenListener();
   }
 
-  function getFirstFromVStr(vStr) {
-
+  function fillListe() { //weitere items von versuch anzeigen?
+  document.getElementById("nvDiv").children[0].innerHTML = ""; //ul element
+  //console.log(listV);
+  var options = {
+    valueNames: [ 'name', 'termin', 'raum', 'typ', 'dauer', 'leiter' ],
+    item: '<li><a href="/vd" class="name"></a><p class="termin"></p><p class="raum"></p><p class="typ"></p><p class="dauer"></p><p class="leiter"></p></li>'
+  };
+  var mvDiv = new List('nvDiv', options, listV);
+  setExtraText();
   }
 
-  function test() {
-  console.log("home");
+
+  function setExtraText() {
+    let typ = document.getElementsByClassName("typ");
+    for (let i=0; i<typ.length; i++) {
+      typ[i].innerText = "Typ: " + typ[i].innerText.replace("~", ", ");
+    }
+
+    let dauer = document.getElementsByClassName("dauer");
+    for (let i=0; i<dauer.length; i++) {
+      dauer[i].innerText = "Dauer: " + dauer[i].innerText + "h";
+    }
+
+    let raum = document.getElementsByClassName("raum");
+    for (let i=0; i<raum.length; i++) {
+      raum[i].innerText = "Raum: " + raum[i].innerText;
+    }
+
+    let leiter = document.getElementsByClassName("leiter");
+    for (let i=0; i<leiter.length; i++) {
+      leiter[i].innerText = "Leiter: " + leiter[i].innerText;
+    }
+
+    let termin = document.getElementsByClassName("termin");
+    for (let i=0; i<termin.length; i++) {
+      termin[i].innerText = "Termin: " + termin[i].innerText;
+    }
+  }
+
+  function setupNamenListener() {
+    let namen = document.getElementsByClassName("name");
+    for (let i=0; i<namen.length; i++) {
+      namen[i].addEventListener("click", listenForNames);
+    }
+  }
+
+  function listenForNames() {
+    let namen = document.getElementsByClassName("name");
+    //console.log(event);
+    vName = event.path[0].innerText;
+    vName = vName.replace(" ", "_");
+    //console.log(vName);
+    sessionStorage.setItem('versuch', vName);
+  }
+
+  function sortDates(dateArray) {
+    dateArray.sort(function(a, b){return a-b});
+    //https://www.w3schools.com/jsref/jsref_sort.asp
+    //console.log(dateArray);
+    return(dateArray);
   }
 
   export default {

@@ -30,7 +30,7 @@
     let lockedSessionsString = versuch.lockedSes;
     let sArray = sessionString.split("~");
     let lsArray = lockedSessionsString.split("~");
-    console.log(sArray);
+    //console.log(sArray);
 
     let sessionDiv = document.getElementById("sessionSlots");
 

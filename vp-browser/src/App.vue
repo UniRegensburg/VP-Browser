@@ -6,26 +6,30 @@
 </template>
 
 <script>
-    import navBar from './components/NavBar.vue';
-    import Firebase from './js/Firebase';
+  import navBar from './components/NavBar.vue';
+  import Firebase from './js/Firebase';
 
-    //let myFirebase = new Firebase();
-    //myFirebase.getAllVersuche();
+  //let myFirebase = new Firebase();
+  //myFirebase.getAllVersuche();
 
-    sessionStorage.setItem("nutzerName", "hal35337");
+  sessionStorage.setItem("nutzerName", "hal35337");
 
-    export default {
-      components: {
-          'app-header': navBar,
-      },
-      created: function() {
-        let myFirebase = new Firebase();
-        myFirebase.getAllVersuche();
-        myFirebase.getUser();
-        //console.log(sessionStorage.getItem("vArrayStr"));
-        console.log(sessionStorage.getItem("benach"));
-        console.log(sessionStorage.getItem("lvs"));
-      }
+  //TODO: seite (home, versuche etc) mounted bevor db infos aus beforeCreate da sind
+  //beim ersten laden mit leerem session storage
+  //mgl lsg: bevor login bool rausgibt ob richtig, zum daten laden ansetzen?
+
+  export default {
+    components: {
+        'app-header': navBar,
+    },
+    beforeCreate: function() {
+      let myFirebase = new Firebase();
+      myFirebase.getAllVersuche();
+      myFirebase.getUser();
+      //console.log(sessionStorage.getItem("vArrayStr"));
+      //console.log(sessionStorage.getItem("benach"));
+      //console.log(sessionStorage.getItem("lvs"));
+    }
   };
 </script>
 

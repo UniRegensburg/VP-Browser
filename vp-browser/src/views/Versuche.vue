@@ -366,7 +366,7 @@
     kursSortedCounts = sortCounts(kursSortedCounts);
 
     //console.log(kursArray);
-    console.log(wipBool);
+    //console.log(wipBool);
 
     for (let i=0; i<kursSortedCounts.length; i++) {
       for (let j=0; j<kursCountArray.length; j++) {
@@ -498,14 +498,14 @@
     for (let i=0; i<kursBoolArray.length; i++) {
       onlyBools.push(kursBoolArray[i][0]);
     }
-    console.log(onlyBools);
+    //console.log(onlyBools);
     if (!(onlyBools.includes(true))) {
       //kurs damit bei kurs bool und kein kat nicht ganze kat kommt
       //console.log(vArray);
       versuche = vArray;
     }
     katBoolArray = [];
-    console.log(versuche);
+    //console.log(versuche);
     for (let i=0; i<versuche.length; i++) { //multi kats aufteilen
       //console.log(versuche[i]);
       let smallSplitArray=versuche[i].typ.split("~");
@@ -531,8 +531,8 @@
         }
       }
     }
-    console.log(katArray);
-    console.log(wipBool);
+    //console.log(katArray);
+    //console.log(wipBool);
 
     for (let i=0; i<katCountArray.length; i++) {
       katSortedCounts.push(katCountArray[i][1]);

@@ -20,7 +20,7 @@
   vName = sessionStorage.getItem('versuch');
 
   function loadVDetail() {
-    console.log(vName);
+    //console.log(vName);
 
     //id -> name
     let strVN = "ffs";
@@ -69,9 +69,9 @@
 
   function setLink(link) {
     let aTag = document.getElementsByClassName("linkSes")[0];
-    console.log(aTag);
+    //console.log(aTag);
     aTag.addEventListener("click", function() {
-      console.log("listener");
+      //console.log("listener");
       window.location.href=link;
     });
   }

@@ -14,11 +14,11 @@ Firebase.prototype.getUserDoc = function() { //alt
           //console.log(`${doc.id} => ${doc.data()}`);
           if (doc.id === "test") {
             let inhalt = doc.data();
-            console.log(doc.id); //rz kennung
-            console.log(inhalt.name); //unwichtig
-            console.log(inhalt.lvs); // gelockte versuche
+            //console.log(doc.id); //rz kennung
+            //console.log(inhalt.name); //unwichtig
+            //console.log(inhalt.lvs); // gelockte versuche
             testlvs = inhalt.lvs;
-            console.log(testlvs);
+            //console.log(testlvs);
           }
       });
   });
@@ -85,7 +85,7 @@ Firebase.prototype.getUser = function() {
     });
 }
 
-Firebase.prototype.getAllVersuche = function() {
+Firebase.prototype.getAllVersuche = function() { // TODO: schöner mit json.stringify(array) u json.parse
   let db = firebase.firestore(),
   versuchsArray = []
   db.collection("versuche").get().then((querySnapshot) => {
@@ -94,7 +94,7 @@ Firebase.prototype.getAllVersuche = function() {
       let singleV = [];
       singleV.push(doc.id);
       let inhalt = doc.data(),
-      vDataStr = "" + inhalt.aktiv + "\;" + inhalt.dauer + "\;" + inhalt.descr + "\;" + inhalt.email + "\;" + inhalt.href + "\;" + inhalt.lehrkraft +  "\;" + inhalt.leiter + "\;" + inhalt.linkSes + "\;" + inhalt.lockedSes + "\;" + inhalt.raum + "\;" + inhalt.sessions + "\;" + inhalt.typ + "\;" + inhalt.vp + "\;" + inhalt.xStart + "\;" + inhalt.xEnd + "\;" + inhalt.xSemMin + "\;" + inhalt.xSemMax + "\;" + inhalt.xKurs + "\;" + inhalt.einstellung;
+      vDataStr = "" + inhalt.aktiv + ";" + inhalt.dauer + ";" + inhalt.descr + ";" + inhalt.email + ";" + inhalt.href + ";" + inhalt.lehrkraft +  ";" + inhalt.leiter + ";" + inhalt.linkSes + ";" + inhalt.lockedSes + ";" + inhalt.raum + ";" + inhalt.sessions + ";" + inhalt.typ + ";" + inhalt.vp + ";" + inhalt.xStart + ";" + inhalt.xEnd + ";" + inhalt.xSemMin + ";" + inhalt.xSemMax + ";" + inhalt.xKurs + ";" + inhalt.einstellung;
       //indexe: 0 aktiv; 1 dauer; 2 descr; 3 email; 4 href; 5 lehrkraft; 6 leiter; 7 linkSes; 8 lockedSes; 9 raum; 10 sessions; 11 typ; 12 vp; 13 xstart; 14 xend; 15 xsemmin; 16 xsemmax; 17 xkurs (darf kein komma im namen haben); 18 einstellungsdatum
       singleV.push(vDataStr);
       versuchsArray.push(singleV);
@@ -107,8 +107,8 @@ Firebase.prototype.getAllVersuche = function() {
 Firebase.prototype.convertVStrToArray = function(vStr) {
   let kommaArray = vStr.split(","),
   returnArray = [];
-  console.log(vStr);
-  console.log(kommaArray);
+  //console.log(vStr);
+  //console.log(kommaArray);
 
   for (let i=0; i<kommaArray.length; i++) {
     if (i%2 == 1) {
@@ -119,7 +119,7 @@ Firebase.prototype.convertVStrToArray = function(vStr) {
       returnArray.push(vEntry);
     }
   }
-  console.log(returnArray);
+  //console.log(returnArray);
   return(returnArray);
 }
 //nötig, da sessionStorage mit komplexen datentypen probleme macht
