@@ -27,7 +27,39 @@
     getUserVFromDB();
     fillListe();
     setupNamenListener();
-    sortByDate();
+    setupSearchUpdate();
+    sortByDate(); //setzt direkt listener
+  }
+
+  function setupSearchUpdate() {
+    let mvDiv = document.getElementById("mvDiv").children;
+    for (let i=0; i<mvDiv.length-1; i++) { //-1 da letztes item ul
+      if (i==0) {
+        mvDiv[i].addEventListener("input", resetListener); //text input
+      } else {
+        mvDiv[i].addEventListener("click", resetListener);
+      }
+    }
+  }
+
+  function resetListener() {
+    let boxen = document.getElementsByName("mvCheck");
+    //console.log(boxen);
+    for (let i=0; i<boxen.length; i++) {
+      boxen[i].removeEventListener("input", listenForCheck);
+      boxen[i].addEventListener("input", listenForCheck);
+    }
+    //console.log(userV);
+  }
+
+  function listenForCheck() {
+    //console.log(event.path[1].children[1].innerText, event.path[1].children[0].checked);
+    for (let i=0; i<userV.length; i++) {
+      if (userV[i][0] == event.path[1].children[1].innerText) {
+        userV[i][2] = event.path[1].children[0].checked;
+      }
+    }
+    //console.log(userV);
   }
 
   function sortByDate() {
@@ -39,7 +71,7 @@
   //console.log(listV);
   var options = {
     valueNames: [ 'name', 'termin', 'raum', 'typ', 'dauer', 'leiter' ],
-    item: '<li><a href="/vd" class="name"></a><p class="termin"></p><p class="raum"></p><p class="typ"></p><p class="dauer"></p><p class="leiter"></p></li>'
+    item: '<li><input type="checkbox" name="mvCheck"><a href="/vd" class="name"></a><p class="termin"></p><p class="raum"></p><p class="typ"></p><p class="dauer"></p><p class="leiter"></p></li>'
   };
   var mvDiv = new List('mvDiv', options, listV);
   setExtraText();
