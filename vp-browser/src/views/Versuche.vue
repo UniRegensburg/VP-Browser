@@ -24,6 +24,10 @@
         <div id="studDiv">
         </div>
       </div>
+      <div>
+        <hr>
+        <p><input type="checkbox" id="oldCheck">abgeschlossene Versuche</p>
+      </div>
       <br>
       <button id="updateFilter">Filten anwenden</button>
     </div>
@@ -64,7 +68,8 @@
   katKursCutOf = 1,
   katShowMore = false,
   kursShowMore = false,
-  studShowMore = false;
+  studShowMore = false, //stud ausklappbar machen?
+  oldCheck = false;
 
 
   //TODO: / bugs: kat oder kurs auswahl zeigt beim gegenpart alle einträge
@@ -74,13 +79,14 @@
     vArray = myFirebase.convertVStrToArray(sessionStorage.getItem("vArrayStr"));
     //console.log(vArray);
 
-    fillListe(vArray);
+    filterVersuche();
     setupNamenListener();
     setupFilterListeners();
-    setKategorien(vArray);
-    setKurse(vArray);
-    setStud(vArray);
+    setKategorien(filterArray);
+    setKurse(filterArray);
+    setStud(filterArray);
     firstBool = false;
+    setAltListener();
   }
 
   function fillListe(versuche) {
@@ -144,7 +150,10 @@
                 //filterArray.push(vArray[i]);
                 if (checkedKurse.includes(vArray[i].xKurs) || checkedKurse.length === 0) {
                   if (checkedStud.includes(vArray[i].studiengang) || checkedStud.length === 0) {
-                    filterArray.push(vArray[i]);
+                    if((vArray[i].aktiv == "true") || oldCheck) {
+                      //console.log(vArray[i].name, vArray[i].aktiv, oldCheck);
+                      filterArray.push(vArray[i]);
+                    }
                   }
                 }
                 break; //keine mehrfacheinträge
@@ -804,6 +813,15 @@
     }
     return(katReturnArray);
   }
+////////////////////////////////////////////////////////////////////////////////
+//alte Versuche
+////////////////////////////////////////////////////////////////////////////////
+  function setAltListener() {
+    let altCheck = document.getElementById("oldCheck");
+    altCheck.addEventListener("input", function() {
+      oldCheck = altCheck.checked;
+    })
+  }
 
   function sortCounts(numArray) { //groß zu klein, sortNumbers klein zu groß
     numArray.sort(function(a, b){return b-a});
@@ -813,6 +831,16 @@
   }
 
   function setExtraText() {
+    //name abgelaufen
+    let aNamen = document.getElementsByClassName("name");
+    for (let i=0; i<aNamen.length; i++) {
+      for (let j=0; j<filterArray.length; j++) {
+        if ((aNamen[i].innerText == filterArray[j].name) && (filterArray[j].aktiv == "false")) {
+          aNamen[i].innerText = "[Abgelaufen] " + aNamen[i].innerText;
+        }
+      }
+    }
+
     let typ = document.getElementsByClassName("typ");
     for (let i=0; i<typ.length; i++) {
       typ[i].innerText = "Typ: " + typ[i].innerText.replace("~", ", ");
