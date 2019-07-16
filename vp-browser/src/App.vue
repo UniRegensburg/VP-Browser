@@ -12,7 +12,7 @@
   //let myFirebase = new Firebase();
   //myFirebase.getAllVersuche();
 
-  sessionStorage.setItem("nutzerName", "hal35337");
+  sessionStorage.setItem("nutzerName", "delete");
 
   //TODO: seite (home, versuche etc) mounted bevor db infos aus beforeCreate da sind
   //beim ersten laden mit leerem session storage

@@ -24,11 +24,13 @@ Firebase.prototype.getUserDoc = function() { //alt
   });
 };
 
-Firebase.prototype.pushNewUser = function() {
+//Firebase.prototype.pushNewUser = function(name) {
+function pushNewUser(name) {
   let db = firebase.firestore();
-  db.collection("nutzer").doc("t4").set({
-      name: "t4",
-      lvs: "text2"
+  db.collection("nutzer").doc(name).set({
+      name: name,
+      lvs: "",
+      benach: "0"
   })
   .then(function() {
       //console.log("Document successfully written!");
@@ -107,6 +109,9 @@ Firebase.prototype.getUser = function() {
     .catch(function(error) {
         console.log("Error getting documents: ", error);
     });
+    if (sessionStorage.getItem("benach") == null) {
+      pushNewUser(sessionStorage.getItem("nutzerName"));
+    }
 }
 
 //start
