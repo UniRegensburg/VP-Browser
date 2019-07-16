@@ -24,8 +24,8 @@
     },
     beforeCreate: function() {
       let myFirebase = new Firebase();
-      myFirebase.getAllVersuche();
       myFirebase.getUser();
+      myFirebase.getAllVersuche();
       //console.log(sessionStorage.getItem("vArrayStr"));
       //console.log(sessionStorage.getItem("benach"));
       //console.log(sessionStorage.getItem("lvs"));

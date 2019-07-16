@@ -33,8 +33,8 @@
     let versuch = myFirebase.getVersuch(), //später query? jetz alle versuche aus sessionStorage durchsuchen,
     link = versuch.href;
     var options = {
-      valueNames: ['typ', 'dauer', 'vp', 'descr', 'linkSes', 'raum', 'leiter', 'email', 'lehrkraft'],
-      item: '<li><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="descr"></p></br><a class="linkSes"></a><p class="raum"></p></br><p class="leiter"></p><p class="email"></p><p class="lehrkraft"></p></li>'};
+      valueNames: ['typ', 'dauer', 'vp', 'descr', 'xSpecial', 'linkSes', 'raum', 'leiter', 'email', 'lehrkraft'],
+      item: '<li><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="descr"></p><p class="xSpecial"></p></br><a class="linkSes"></a><p class="raum"></p></br><p class="leiter"></p><p class="email"></p><p class="lehrkraft"></p></li>'};
     var detailList = new List('detail-list', options, versuch);
 
     setLink(link);
@@ -53,6 +53,9 @@
 
     let descr = document.getElementsByClassName("descr")[0];
     descr.innerText = "Beschreibung: " + descr.innerText;
+
+    let special = document.getElementsByClassName("xSpecial")[0];
+    special.innerText = "weitere Kriterien: " + special.innerText;
 
     let raum = document.getElementsByClassName("raum")[0];
     raum.innerText = "Raum: " + raum.innerText;

@@ -115,7 +115,7 @@
     document.getElementById("vListDiv").children[4].innerHTML = ""; //ul element
     //nach sem, vp, datum einzeln filtern, jeweils vNamen zurückgeben und dann schauen?
     for (let i=0; i<vArray.length; i++) {
-      if(semMin <= vArray[i].xSemMax && vArray[i].xSemMin <= semMax) { //TODO logik - done
+      if(semMin <= vArray[i].xSemMin && vArray[i].xSemMax <= semMax) { //TODO logik - done?-!
       //console.log("sem"+i);
         if(vpzMin <= vArray[i].vp && vArray[i].vp <= vpzMax) {
           //console.log("vpz"+i);
