@@ -19,6 +19,11 @@
         <div id="kursDiv">
         </div>
       </div>
+      <div>
+        <h4>Studium</h4>
+        <div id="studDiv">
+        </div>
+      </div>
       <br>
       <button id="updateFilter">Filten anwenden</button>
     </div>
@@ -54,10 +59,13 @@
   filterArray = [],
   katBoolArray = [],
   kursBoolArray = [],
+  studBoolArray = [],
   firstBool = true,
   katKursCutOf = 1,
   katShowMore = false,
-  kursShowMore = false;
+  kursShowMore = false,
+  studShowMore = false;
+
 
   //TODO: / bugs: kat oder kurs auswahl zeigt beim gegenpart alle einträge
   // list sort fkt mit gefiltertern versuchen nicht - 2x filtern fkt - notlösung
@@ -71,6 +79,7 @@
     setupFilterListeners();
     setKategorien(vArray);
     setKurse(vArray);
+    setStud(vArray);
     firstBool = false;
   }
 
@@ -84,6 +93,7 @@
     if(!firstBool) { //TODO: array übergeben, vorheriges zu beginn leeren - done
       setKategorien(versuche);
       setKurse(versuche);
+      setKategorien(versuche);
     }
     setDateInputMinMax(versuche);
     setSemesterMinMax(versuche);
@@ -110,7 +120,8 @@
     //console.log(semMin, semMax, vpzMin, vpzMax, startDate, endDate);
     filterArray = [];
     let checkedKats = getCheckedKats(),
-    checkedKurse = getCheckedKurse();
+    checkedKurse = getCheckedKurse(),
+    checkedStud = getCheckedStud();
     //console.log(checkedKats);
     document.getElementById("vListDiv").children[4].innerHTML = ""; //ul element
     //nach sem, vp, datum einzeln filtern, jeweils vNamen zurückgeben und dann schauen?
@@ -129,10 +140,12 @@
             //console.log("date"+i);
             let vArrayTypSplit = vArray[i].typ.split("~");
             for (let j=0; j<vArrayTypSplit.length; j++) {
-              if (checkedKats.includes(vArrayTypSplit[j]) || checkedKats.includes(vArray[i].typ) || checkedKats.length === 0) {
+              if (checkedKats.includes(vArrayTypSplit[j]) || checkedKats.length === 0) { //  ||checkedKats.includes(vArray[i].typ)
                 //filterArray.push(vArray[i]);
-                if (checkedKurse.includes(vArray[i].xKurs) || checkedKurse.length == 0) {
-                  filterArray.push(vArray[i]);
+                if (checkedKurse.includes(vArray[i].xKurs) || checkedKurse.length === 0) {
+                  if (checkedStud.includes(vArray[i].studiengang) || checkedStud.length === 0) {
+                    filterArray.push(vArray[i]);
+                  }
                 }
                 break; //keine mehrfacheinträge
               }
@@ -316,7 +329,9 @@
     //console.log(returnArray);
     return(returnArray);
   }
-
+////////////////////////////////////////////////////////////////////////////////
+//KURSE
+///////////////////////////////////////////////////////////////////////////////
   function setKurse(versuche) { //TODO checked bug - done
     //console.log(versuche);
     let kursDiv = document.getElementById("kursDiv"),
@@ -334,6 +349,9 @@
     }
     for (let i=0; i<kursBoolArray.length; i++) {
       onlyBools.push(kursBoolArray[i][0]);
+    }
+    for (let i=0; i<studBoolArray.length; i++) { //TODO in kurs,kat und dann aktiv?
+      onlyBools.push(studBoolArray[i][0]);
     }
     //console.log(kursBoolArray);
     if (!(onlyBools.includes(true))) {
@@ -478,7 +496,144 @@
     }
     return(kursReturnArray);
   }
+////////////////////////////////////////////////////////////////////////////////
+//Studiengang
+////////////////////////////////////////////////////////////////////////////////
+  function setStud(versuche) { //TODO checked bug - done
+    //console.log(versuche);
+    let studDiv = document.getElementById("studDiv"),
+    studArray = [],
+    studCountArray = [],
+    studSortedCounts = [],
+    wipBool = studBoolArray,
+    onlyBools = [];
+    studDiv.innerHTML = "";
+    studBoolArray = [];
 
+    //selbe if bool abfrage nötig wie in kat?
+    for (let i=0; i<katBoolArray.length; i++) {
+      onlyBools.push(katBoolArray[i][0]);
+    }
+    for (let i=0; i<kursBoolArray.length; i++) {
+      onlyBools.push(kursBoolArray[i][0]);
+    }
+    for (let i=0; i<studBoolArray.length; i++) { //TODO in kurs,kat und dann aktiv?
+      onlyBools.push(studBoolArray[i][0]);
+    }
+    //console.log(studBoolArray);
+
+    if (!(onlyBools.includes(true))) {
+      //kurs damit bei kurs bool und kein kat nicht ganze kat kommt
+      //console.log(vArray);
+      versuche = vArray;
+    }
+
+    for (let i=0; i<versuche.length; i++) {
+      //console.log(versuche[i]);
+      if(!(studArray.includes(versuche[i].studiengang))) { // unique kurse
+        studArray.push(versuche[i].studiengang);
+
+        let studCountWip = [];
+        studCountWip.push(versuche[i].studiengang);
+        studCountWip.push(1);
+        studCountArray.push(studCountWip);
+      } else {
+        for (let j=0; j<studCountArray.length; j++) {
+          if(versuche[i].studiengang == studCountArray[j][0]) {
+            studCountArray[j][1] += 1; //add count to unqie
+          }
+        }
+      }
+    }
+
+    for (let i=0; i<studCountArray.length; i++) {
+      studSortedCounts.push(studCountArray[i][1]);
+    }
+    studSortedCounts = sortCounts(studSortedCounts);
+
+    //console.log(studArray);
+    //console.log(wipBool);
+
+    for (let i=0; i<studSortedCounts.length; i++) {
+      for (let j=0; j<studCountArray.length; j++) {
+        if (studSortedCounts[i] == studCountArray[j][1]) {
+          let index = 0;
+          for (let k=0; k<studArray.length; k++) {
+            if (studCountArray[j][0] == studArray[k]) { //TODO wenn gechecked -> gechecked setzen - done
+            //console.log(kursShowMore);
+              //if (i<katKursCutOf || kursShowMore) { //kein cut of
+                //console.log(studArray[k]);
+                let itemdiv = document.createElement("DIV"),
+                item = document.createElement("INPUT"),
+                singleBool = [],
+                checkedBool = false;
+                itemdiv.class = "inlineP";
+                item.type = "checkbox";
+                item.name = "stud";
+                item.value = i;
+                //item.checked = true; //fkt nicht
+
+                itemdiv.appendChild(item);
+                itemdiv.innerHTML += studArray[k] + "</br>";
+                studDiv.appendChild(itemdiv);
+
+                for (let l=0; l<wipBool.length; l++) {
+                  if (wipBool[l][1] == studArray[k] && wipBool[l][0]) {
+                    //console.log(studDiv.children[0].children[0]);
+                    for (let p=0; p<studDiv.children.length; p++) { //-1?
+                      //console.log(studArray[k], studDiv.children[p].innerText.slice(0, -1));
+                      if (studArray[k] == studDiv.children[p].innerText.slice(0, -1)) {
+                        studDiv.children[p].children[0].checked = true;
+                      }
+                    }
+                    //studDiv.children[l].children[0].checked = true;
+                    //k falsche werte, l out of range bei kat, hier nicht, evtl weil test sample hier nur 2
+                    singleBool.push(true);
+                    checkedBool = true;
+                  }
+                }
+                if (!checkedBool) {
+                  singleBool.push(false);
+                }
+
+                //singleBool.push(false);
+                singleBool.push(studArray[k])
+                studBoolArray.push(singleBool);
+                index = k;
+              //}
+            }
+          }
+          studArray.splice(index, 1);
+        }
+      }
+    }
+    setStudListener(); //el wird zerstört und neu geladen
+  }
+
+  function setStudListener() {
+    let stud = document.getElementsByName("stud");
+    for (let i=0; i<stud.length; i++) {
+      stud[i].addEventListener("input", function() {
+        studBoolArray[i][0] = stud[i].checked;
+        //console.log(studBoolArray);
+        //stud[i].checked = true;
+      })
+    }
+  }
+
+  function getCheckedStud() {
+    let studDiv = document.getElementById("studDiv").children,
+    studReturnArray = [];
+    for (let i=0; i<studBoolArray.length; i++) {
+      if (studBoolArray[i][0]) {
+        studReturnArray.push(studDiv[i].innerText.slice(0, -1));
+      }
+    }
+    return(studReturnArray);
+  }
+////////////////////////////////////////////////////////////////////////////////
+//Kategorien
+////////////////////////////////////////////////////////////////////////////////
   function setKategorien(versuche) {
   //TODO nach zeig mehr weniger lädt hier imemr alle v, kurse bleibt richtig?
   //oder mehr -> wieder alle besser? -> checked bug? - war checked - done
@@ -497,6 +652,9 @@
     }
     for (let i=0; i<kursBoolArray.length; i++) {
       onlyBools.push(kursBoolArray[i][0]);
+    }
+    for (let i=0; i<studBoolArray.length; i++) { //TODO in kurs,kat und dann aktiv?
+      onlyBools.push(studBoolArray[i][0]);
     }
     //console.log(onlyBools);
     if (!(onlyBools.includes(true))) {
