@@ -80,7 +80,7 @@
     //console.log(vArray);
 
     filterVersuche();
-    setupNamenListener();
+    //setupNamenListener();
     setupFilterListeners();
     setKategorien(filterArray);
     setKurse(filterArray);
@@ -97,10 +97,12 @@
     var vList = new List('vListDiv', options, versuche);
     setExtraText();
     if(!firstBool) { //TODO: array übergeben, vorheriges zu beginn leeren - done
+    //TODO nichtmehr nötig weil filterVersuche jetz erster aufruf
       setKategorien(versuche);
       setKurse(versuche);
       setKategorien(versuche);
     }
+    setupNamenListener();
     setDateInputMinMax(versuche);
     setSemesterMinMax(versuche);
     setVPZMinMax(versuche);
@@ -883,6 +885,7 @@
     let namen = document.getElementsByClassName("name");
     //console.log(event);
     vName = event.path[0].innerText;
+    vName = vName.replace("[Abgelaufen] ", "");
     vName = vName.replace(" ", "_");
     //console.log(vName);
     sessionStorage.setItem('versuch', vName);
