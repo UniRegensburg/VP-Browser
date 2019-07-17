@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <h1>Home</h1>
     <div>
       <h3>Nächster Versuch</h3>
@@ -23,7 +23,8 @@
 
   let myFirebase = new Firebase(),
   userV = [],
-  listV = [];
+  listV = [],
+  vName = "";
 
   function initHome() {
     getFirstVersuch();
@@ -93,7 +94,7 @@
   function setExtraText() {
     let typ = document.getElementsByClassName("typ");
     for (let i=0; i<typ.length; i++) {
-      typ[i].innerText = "Typ: " + typ[i].innerText.replace("~", ", ");
+      typ[i].innerText = "Typ: " + typ[i].innerText.replace(/~/g, ", ");
     }
 
     let dauer = document.getElementsByClassName("dauer");
@@ -128,7 +129,7 @@
     let namen = document.getElementsByClassName("name");
     //console.log(event);
     vName = event.path[0].innerText;
-    vName = vName.replace(" ", "_");
+    //vName = vName.replace(" ", "_");
     //console.log(vName);
     sessionStorage.setItem('versuch', vName);
   }

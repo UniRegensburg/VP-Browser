@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="main">
     <h1 id="vdvName"></h1>
     <div>
       <h3>Informationen</h3>
       <div id="detail-list">
-        <ul class="list"></ul>
+        <ul class="list" id="vdUL"></ul>
       </div>
     </div>
   </div>
@@ -23,18 +23,18 @@
     //console.log(vName);
 
     //id -> name
-    let strVN = "ffs";
+    /*let strVN = "ffs";
     if (vName != null) {
       strVN = vName.replace("_", " ");
-    }
-    document.getElementById("vdvName").innerHTML = strVN;
+    }*/ //-> setExtraText
+    document.getElementById("vdvName").innerHTML = vName;
 
     //list laden
     let versuch = myFirebase.getVersuch(), //später query? jetz alle versuche aus sessionStorage durchsuchen,
     link = versuch.href;
     var options = {
       valueNames: ['typ', 'dauer', 'vp', 'descr', 'xSpecial', 'linkSes', 'raum', 'leiter', 'email', 'lehrkraft'],
-      item: '<li><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="descr"></p><p class="xSpecial"></p></br><a class="linkSes"></a><p class="raum"></p></br><p class="leiter"></p><p class="email"></p><p class="lehrkraft"></p></li>'};
+      item: '<li><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="descr"></p><p class="xSpecial"></p><hr><a class="linkSes"></a><p class="raum"></p><hr><p class="leiter"></p><p class="email"></p><p class="lehrkraft"></p></li>'};
     var detailList = new List('detail-list', options, versuch);
 
     setLink(link);
@@ -42,6 +42,9 @@
   }
 
   function setExtraText() {
+    let name = document.getElementById("vdvName");
+    name.innerText = name.innerText.replace(/_/g, " ");
+
     let typ = document.getElementsByClassName("typ")[0];
     typ.innerText = "Typ: " + typ.innerText;
 
@@ -87,8 +90,12 @@
 
 <style>
   .linkSes {
-    color: blue;
     text-decoration: underline;
     cursor: pointer;
+  }
+  #vdUL {
+    padding: 0;
+    list-style: none;
+    max-width: 1000px;
   }
 </style>

@@ -60,36 +60,20 @@
 
 <style>
 html, body {
-	font-family: "Trebuchet MS", Helvetica, sans-serif;
-	margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
 	padding: 0;
-	background: #e0e0e2;
-}
-
-header {
-	width: 98vw;
-	height: 7vh;
-	padding: 0 1vw;
-	line-height: 7vh;
-	background: #2b4162;
-	border-style: solid;
-	border-width: 0 0 1px 0;
-	border-color: #e0e0e2;
-	font-size: 4vh;
-	color: #FFFFFF;
-}
-
-#mainApp {
-	padding: 0 1vw;
+	background: #D1D1D1;
+  max-width: 1920px;
 }
 
 #nav {
-	width: 100vw;
-	background: #2b4162;
+	width: 100%;
+	background: #9C004B;
 }
 
 #nav a {
-	color: #FFF;
+	color: #FBFFFE;
 }
 
 #nav ul {
@@ -101,17 +85,41 @@ header {
 }
 
 #nav li {
-	padding: 1vh;
-	background-color: #2b4162;
+	padding: 0.67em;
+	background-color: #9C004B;
 }
 
 #nav li:hover {
 	cursor: pointer;
-	color: #2b4162;
-	background-color: #FFF;
+	background-color: #1B1B1E;
 }
 
-#nav li.active {
-	text-decoration: underline;
+#nav li a.router-link-exact-active {
+  background-color: #1B1B1E;
 }
+
+.main {
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+.bigList {
+  border-style: solid;
+  border-width: 1px;
+  line-height: 0.75em;
+  padding-top: 0.75em;
+  padding-left: 0.5em;
+  margin: 10px 0;
+  list-style: none;
+  max-width: 1000px;
+}
+
+.bigList a {
+  font-size: 1.5em;
+}
+
+a {
+  color: #004789;
+}
+
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <h1>meine Versuche</h1>
     <div id="mvDiv">
       <input class="search" placeholder="Suche"/>
@@ -106,7 +106,7 @@
   //console.log(listV);
   var options = {
     valueNames: [ 'name', 'termin', 'raum', 'typ', 'dauer', 'leiter' ],
-    item: '<li><input type="checkbox" name="mvCheck"><a href="/vd" class="name"></a><p class="termin"></p><p class="raum"></p><p class="typ"></p><p class="dauer"></p><p class="leiter"></p></li>'
+    item: '<li class="bigList"><input type="checkbox" name="mvCheck"><a href="/vd" class="name"></a><p class="termin"></p><p class="raum"></p><p class="typ"></p><p class="dauer"></p><p class="leiter"></p></li>'
   };
   var mvDiv = new List('mvDiv', options, listV);
   setExtraText();
@@ -144,7 +144,7 @@
   function setExtraText() {
     let typ = document.getElementsByClassName("typ");
     for (let i=0; i<typ.length; i++) {
-      typ[i].innerText = "Typ: " + typ[i].innerText.replace("~", ", ");
+      typ[i].innerText = "Typ: " + typ[i].innerText.replace(/~/g, ", ");
     }
 
     let dauer = document.getElementsByClassName("dauer");
@@ -184,7 +184,7 @@
     let namen = document.getElementsByClassName("name");
     //console.log(event);
     vName = event.path[0].innerText;
-    vName = vName.replace(" ", "_");
+    //vName = vName.replace(" ", "_");
     //console.log(vName);
     sessionStorage.setItem('versuch', vName);
   }

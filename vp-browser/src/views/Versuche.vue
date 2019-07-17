@@ -1,49 +1,49 @@
 <template>
-<div>
-  <h1>Versuche</h1>
-  <div id="vlMain">
-    <div id="vlLinks">
-      <h3>Filter</h3>
-      <p>Semester von:<input type="number" id="semMin" min="1" max="4"> bis:<input type="number" id="semMax" min="1" max="8"></p>
-      <p>VP-Zahl von:<input type="number" id="vpzMin" min="0" max="3" step="0.25"> bis:<input type="number" id="vpzMax" min="0.25" max="4" step="0.25"></p>
-      <p>Start ab: <input type="date" id="startDate"></p>
-      <p>Ende bis: <input type="date" id="endDate"></p>
-      <!-- min und max programatisch bestimmen -->
-      <div>
-        <h4>Kategorien</h4>
-        <div id="katDiv">
+  <div class="main">
+    <h1>Versuche</h1>
+    <div id="vlMain">
+      <div id="vlLinks">
+        <h3>Filter</h3>
+        <p>Semester von:<input type="number" id="semMin" min="1" max="4"> bis:<input type="number" id="semMax" min="1" max="8"></p>
+        <p>VP-Zahl von:<input type="number" id="vpzMin" min="0" max="3" step="0.25"> bis:<input type="number" id="vpzMax" min="0.25" max="4" step="0.25"></p>
+        <p>Start ab: <input type="date" id="startDate"></p>
+        <p>Ende bis: <input type="date" id="endDate"></p>
+        <!-- min und max programatisch bestimmen -->
+        <div>
+          <h4>Kategorien</h4>
+          <div id="katDiv">
+          </div>
         </div>
-      </div>
-      <div>
-        <h4>Kurse</h4>
-        <div id="kursDiv">
+        <div>
+          <h4>Kurse</h4>
+          <div id="kursDiv">
+          </div>
         </div>
-      </div>
-      <div>
-        <h4>Studium</h4>
-        <div id="studDiv">
+        <div>
+          <h4>Studium</h4>
+          <div id="studDiv">
+          </div>
         </div>
+        <div>
+          <hr>
+          <p><input type="checkbox" id="oldCheck">abgeschlossene Versuche</p>
+        </div>
+        <br>
+        <button id="updateFilter">Filten anwenden</button>
       </div>
-      <div>
-        <hr>
-        <p><input type="checkbox" id="oldCheck">abgeschlossene Versuche</p>
-      </div>
-      <br>
-      <button id="updateFilter">Filten anwenden</button>
-    </div>
-    <div id="vlRechts">
-      <h3>Einträge</h3>
-      <div id="vListDiv">
-        <input class="search" placeholder="Suche"/>
-        Sortieren nach
-        <button><span class="sort" data-sort="name">Name</span></button>
-        <button><span class="sort" data-sort="vp">VP-Zahl</span></button>
-        <button><span class="sort" data-sort="einstellung">Einstellung</span></button>
-        <ul class="list"></ul>
+      <div id="vlRechts">
+        <h3>Einträge</h3>
+        <div id="vListDiv">
+          <input class="search" placeholder="Suche"/>
+          Sortieren nach
+          <button><span class="sort" data-sort="name">Name</span></button>
+          <button><span class="sort" data-sort="vp">VP-Zahl</span></button>
+          <button><span class="sort" data-sort="einstellung">Einstellung</span></button>
+          <ul class="list"></ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -92,7 +92,7 @@
   function fillListe(versuche) {
     var options = {
       valueNames: [ 'name', 'typ', 'dauer', 'vp', 'leiter', 'xKurs', 'einstellung' ],
-      item: '<li><a href="/vd" class="name"></a><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="leiter"></p><p class="xKurs"></p><p class="einstellung"></p></li>'
+      item: '<li class="bigList"><a href="/vd" class="name"></a><p class="typ"></p><p class="dauer"></p><p class="vp"></p><p class="leiter"></p><p class="xKurs"></p><p class="einstellung"></p></li>'
     };
     var vList = new List('vListDiv', options, versuche);
     setExtraText();
@@ -845,7 +845,7 @@
 
     let typ = document.getElementsByClassName("typ");
     for (let i=0; i<typ.length; i++) {
-      typ[i].innerText = "Typ: " + typ[i].innerText.replace("~", ", ");
+      typ[i].innerText = "Typ: " + typ[i].innerText.replace(/~/g, ", ");
     }
 
     let dauer = document.getElementsByClassName("dauer");
@@ -886,7 +886,7 @@
     //console.log(event);
     vName = event.path[0].innerText;
     vName = vName.replace("[Abgelaufen] ", "");
-    vName = vName.replace(" ", "_");
+    //vName = vName.replace(" ", "_");
     //console.log(vName);
     sessionStorage.setItem('versuch', vName);
   }

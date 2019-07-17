@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <h1><a href="/vd" id="sessionTitel"></a></h1>
     <p>Termine</p>
     <div id="sessionSlots"></div>
@@ -96,12 +96,13 @@
     btn.addEventListener("click", anmeldeFkt);
   }
 
-  function anmeldeFkt() { //TODO sich ansammelnde ~ in db löschen
+  function anmeldeFkt() { //TODO sich ansammelnde ~ in db löschen - done
     let sesStr = sArray[checkedIndex],
     userSesStr = "~" + vName + "+" + sesStr, //~ nötig zum splitten
     lvsStr = sessionStorage.getItem("lvs")+userSesStr,
     newSesStr = lockedSessionsString + "~" + sesStr;
     //console.log(sesStr, userSesStr);
+    lvsStr = lvsStr.replace(/~~/g, ""); //mehrfach ~ entfernen
 
     sessionStorage.setItem("lvs", lvsStr);
     myFirebase.userVAnAbmelden(lvsStr);

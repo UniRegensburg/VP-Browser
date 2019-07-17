@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <h1 id="profilH1">Profil</h1>
     <p>Email Benachrichtigungen</p>
     <div id="benachIn">
