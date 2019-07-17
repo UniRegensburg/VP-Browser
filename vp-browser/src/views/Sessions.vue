@@ -6,6 +6,7 @@
     <!-- wie bei doodle gefüllte slots zeigen und nicht klickbar?, label außen rum? -->
     <br>
     <button id="vAnmelden">für Session anmelden</button>
+    <h4 id="alreadyRec">Sie sind bereits für eine Session angemeldet</h4>
   </div>
 </template>
 
@@ -26,7 +27,7 @@
     vName = sessionStorage.getItem('versuch');
 
     //name als überschrift
-    let strVN = vName.replace("_", " ");
+    let strVN = vName.replace(/_/g, " ");
     document.getElementById("sessionTitel").innerHTML = strVN;
 
     versuch = myFirebase.getVersuch();
@@ -76,7 +77,28 @@
     }
 
     setupRadioListener();
-    setupAnmeldeButton();
+    if (!(checkAlreadyReg())) {
+      let alreadyRec = document.getElementById("alreadyRec");
+      setupAnmeldeButton();
+      alreadyRec.style.visibility = "hidden";
+    } else {
+      console.log("already");
+      let alreadyRec = document.getElementById("alreadyRec"),
+      btn = document.getElementById("vAnmelden");
+      alreadyRec.style.visibility = "visible";
+      btn.disabled = true;
+    }
+  }
+
+  function checkAlreadyReg() {
+    let lvs = sessionStorage.getItem("lvs");
+    if (lvs.includes(vName)) {
+      console.log("already");
+      return true;
+    } else {
+      console.log("not alr");
+      return false;
+    }
   }
 
   //TODO div wenn man bereits eine session belegt hat
@@ -100,23 +122,40 @@
     let sesStr = sArray[checkedIndex],
     userSesStr = "~" + vName + "+" + sesStr, //~ nötig zum splitten
     lvsStr = sessionStorage.getItem("lvs").replace(/~~/g, "")+userSesStr,
-    newSesStr = lockedSessionsString + "~" + sesStr;
-    //console.log(sesStr, userSesStr);
+    newSesStr = lockedSessionsString + "~" + sesStr,
+    vArray = myFirebase.convertVStrToArray(sessionStorage.getItem("vArrayStr"));;
+    //console.log(lvsStr);
 
     sessionStorage.setItem("lvs", lvsStr);
     myFirebase.userVAnAbmelden(lvsStr);
 
-    console.log(versuch.lockedSes, newSesStr);
-    versuch.lockedSes = newSesStr;
+    //console.log(versuch.lockedSes, newSesStr);
+    versuch.lockedSes = newSesStr; //TODO in vArray - oder db neu laden
     myFirebase.lockedSesUpdate(newSesStr, versuch.name);
-    console.log(versuch.lockedSes, newSesStr);
+    //console.log(versuch);
 
     let sessionDiv = document.getElementsByClassName("inlineP");
+    console.log(sesStr);
     for (let i=0; i<sessionDiv.length; i++) {
-      if (sesStr = sessionDiv[i].innerText.slice(0, -1)) {
-        sessionDiv[i].disabled = true; //TODO alert setzen?
+      console.log(sessionDiv[i].innerText.slice(0, -1));
+      if (sesStr == sessionDiv[i].innerText.slice(0, -1)) {
+        console.log("hi");
+        sessionDiv[i].children[0].disabled = true;
       }
     }
+
+    for (let i=0; i<vArray.length; i++) {
+      if (versuch.name == vArray[i].name) {
+        console.log(versuch);
+        vArray[i] = versuch;
+      }
+    }
+
+    alert("Erfolgreich für Session angemeldet.");
+    let alreadyRec = document.getElementById("alreadyRec"),
+    btn = document.getElementById("vAnmelden");
+    alreadyRec.style.visibility = "visible";
+    btn.disabled = true;
   }
 
   export default {
@@ -128,5 +167,8 @@
 <style>
   .inlineP {
     display: inline;
+  }
+  #alreadyRec {
+    color: red;
   }
 </style>

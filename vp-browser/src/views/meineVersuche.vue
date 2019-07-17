@@ -37,24 +37,25 @@
   function setAbmeldeButton() {
     let button = document.getElementById("abmeldeB"),
     lvsStr = sessionStorage.getItem("lvs");
-    console.log(lvsStr);
+    //console.log(lvsStr);
     button.addEventListener("click", function() {
+      //console.log(userV);
       for (let i=0; i<userV.length; i++) {
         if (userV[i][2]) {
-          console.log(userV[i]);
+          //console.log(userV[i]);
           let wipStr = userV[i][0] + "+" + userV[i][1];
-          console.log(wipStr);
+          //console.log(wipStr);
           lvsStr = lvsStr.replace(wipStr, "");
-          console.log(lvsStr);
+          //console.log(lvsStr);
           sessionStorage.setItem("lvs", lvsStr);
           myFirebase.userVAnAbmelden(lvsStr);
           //a_versuch+2019-01-17 12:00~d+2019-01-17 10:00
           for (let j=0; j<vArray.length; j++) {
             if (vArray[j].name == userV[i][0]) {
               let lockedSesStr = vArray[j].lockedSes;
-              console.log(lockedSesStr);
+              //console.log(lockedSesStr);
               lockedSesStr = lockedSesStr.replace(userV[i][1], "");
-              console.log(lockedSesStr);
+              //console.log(lockedSesStr);
               vArray[j].lockedSes = lockedSesStr;
               myFirebase.lockedSesUpdate(lockedSesStr, vArray[j].name);
             }
@@ -90,11 +91,12 @@
   function listenForCheck() {
     //console.log(event.path[1].children[1].innerText, event.path[1].children[0].checked);
     for (let i=0; i<userV.length; i++) {
-      if (userV[i][0] == event.path[1].children[1].innerText) {
+      //console.log(event.path[1].children[2].innerText);
+      if ((userV[i][0] == event.path[1].children[1].innerText) && event.path[1].children[2].innerText.includes(userV[i][1])) { //name & termin
         userV[i][2] = event.path[1].children[0].checked;
+        //break; //setzt nur einen bool -> mehrfach löschen weg
       }
     }
-    //console.log(userV);
   }
 
   function sortByDate() {
@@ -119,17 +121,40 @@
     listV = [];
     userV = userVStr.split("~"); //versucht nach ersten durchlauf mit etwas nicht vorhandenem zu splitten
     removeEmptyLvs();
+    console.log(userV);
+
     for (let i=0; i<userV.length; i++) {
       userV[i] = userV[i].split("+");
+      console.log(userV[i]);
       //versucht nach ersten durchlauf mit etwas nicht vorhandenem zu splitten
       for (let j=0; j<vArray.length; j++) {
         if (userV[i][0] == vArray[j].name) {
           //userV[i][0] = vArray[j];
-          vArray[j]["termin"] = userV[i][1];
-          listV.push(vArray[j]);
+          let wipArray = vArray[j];
+          wipArray["termin"] = userV[i][1]; //termin immer der letzte mit dem versuchsnamen
+          //andere lsg: für einen versuch nur einmal anmelden mgl (versuche mit mehr sitzungen außen vor)
+          console.log(userV[i][1], wipArray);
+          listV.push(wipArray);
+          //vArray[j]["termin"] = userV[i][1];
+          //console.log(vArray[j], userV[i][1]);
+          //listV.push(vArray[j]);
         }
       }
     }
+
+    /*
+    for (let i=0; i<vArray.length; i++) {
+      for (let j=0; j<userV.length; j++) {
+        console.log(userV[j]); //mal string, mal array-wtf
+        //userV[j] = userV[j].split("+");
+        if (userV[j][0] == vArray[i].name) {
+          vArray[i]["termin"] = userV[j][1];
+          console.log(vArray[i], userV[j][1]);
+          listV.push(vArray[i]);
+        }
+      }
+    }
+    */
     //console.log(userV);
   }
 
@@ -161,12 +186,7 @@
     for (let i=0; i<leiter.length; i++) {
       leiter[i].innerText = "Leiter: " + leiter[i].innerText;
     }
-/*
-    let kurse = document.getElementsByClassName("xKurs");
-    for (let i=0; i<kurse.length; i++) {
-      kurse[i].innerText = "Kurse: " + kurse[i].innerText;
-    }
-*/
+
     let termin = document.getElementsByClassName("termin");
     for (let i=0; i<termin.length; i++) {
       termin[i].innerText = "Termin: " + termin[i].innerText;
