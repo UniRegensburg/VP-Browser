@@ -89,9 +89,14 @@ Firebase.prototype.lockedSesUpdate = function(str, name) { //bsp fkt
 
 //start
 Firebase.prototype.getUser = function() {
+  console.log(new Date().getTime());
   let db = firebase.firestore(),
-  nName = sessionStorage.getItem("nutzerName");
-
+  nName = sessionStorage.getItem("nutzerName"),
+  myPromise = new Promise(function (resolve, reject) {
+    resolve(db.collection("nutzer").where("name", "==", nName).get());
+  });
+  return myPromise;
+/*
   db.collection("nutzer").where("name", "==", nName)
     .get()
     .then(function(querySnapshot) {
@@ -103,23 +108,29 @@ Firebase.prototype.getUser = function() {
             sessionStorage.setItem("benach", inhalt.benach);
             sessionStorage.setItem("lvs", inhalt.lvs);
             //return(inhalt);
-            console.log("startNutzerdaten");
+            console.log(new Date().getTime());
         });
     })
     .catch(function(error) {
         console.log("Error getting documents: ", error);
     });
-    if (sessionStorage.getItem("benach") == null) {
-      pushNewUser(sessionStorage.getItem("nutzerName"));
-    }
-}
+*/
+    //if (sessionStorage.getItem("benach") == null) {
+      //pushNewUser(sessionStorage.getItem("nutzerName"));
+    //}
+};
 
 //start
 Firebase.prototype.getAllVersuche = function() { //(callback)
   // TODO: schöner mit json.stringify(array) u json.parse
   let db = firebase.firestore(),
-  versuchsArray = []
-  db.collection("versuche").get().then((querySnapshot) => {
+  versuchsArray = [],
+  myPromise = new Promise(function (resolve, reject) {
+    resolve(db.collection("versuche").get());
+  });
+  return myPromise;
+  /*db.collection("versuche").get()
+  .then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       //console.log(`${doc.id} => ${doc.data()}`);
       let singleV = [];
@@ -132,10 +143,10 @@ Firebase.prototype.getAllVersuche = function() { //(callback)
     });
     sessionStorage.setItem("vArrayStr", versuchsArray);
     //console.log(sessionStorage.getItem("vArrayStr"));
-    console.log("startVersuchsdaten");
+    console.log(new Date().getTime());
     //callback(versuchsArray);
-  });
-}
+  });*/
+};
 
 Firebase.prototype.convertVStrToArray = function(vStr) {
   let kommaArray = vStr.split(","),
