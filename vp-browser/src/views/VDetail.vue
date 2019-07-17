@@ -55,7 +55,7 @@
     vp.innerText = "VP-Stunden: " + vp.innerText;
 
     let descr = document.getElementsByClassName("descr")[0];
-    descr.innerText = "Beschreibung: " + descr.innerText;
+    descr.innerText = "Beschreibung: " + descr.innerText.replace(/~/g, ",");
 
     let special = document.getElementsByClassName("xSpecial")[0];
     special.innerText = "weitere Kriterien: " + special.innerText;

@@ -137,7 +137,7 @@ Firebase.prototype.getAllVersuche = function() { //(callback)
       singleV.push(doc.id);
       let inhalt = doc.data(),
       vDataStr = "" + inhalt.aktiv + ";" + inhalt.dauer + ";" + inhalt.descr + ";" + inhalt.email + ";" + inhalt.href + ";" + inhalt.lehrkraft +  ";" + inhalt.leiter + ";" + inhalt.linkSes + ";" + inhalt.lockedSes + ";" + inhalt.raum + ";" + inhalt.sessions + ";" + inhalt.typ + ";" + inhalt.vp + ";" + inhalt.xStart + ";" + inhalt.xEnd + ";" + inhalt.xSemMin + ";" + inhalt.xSemMax + ";" + inhalt.xKurs + ";" + inhalt.einstellung + ";" + inhalt.xSpecial + ";" + inhalt.studiengang;
-      //indexe: 0 aktiv; 1 dauer; 2 descr (kein komma); 3 email; 4 href; 5 lehrkraft; 6 leiter; 7 linkSes; 8 lockedSes; 9 raum; 10 sessions; 11 typ; 12 vp; 13 xstart; 14 xend; 15 xsemmin; 16 xsemmax; 17 xkurs (darf kein komma im namen haben); 18 einstellungsdatum; 19 besondere kriterien; 20 studiengang
+      //indexe: 0 aktiv; 1 dauer; 2 descr (kein komma-> ~); 3 email; 4 href; 5 lehrkraft; 6 leiter; 7 linkSes; 8 lockedSes; 9 raum; 10 sessions; 11 typ; 12 vp; 13 xstart; 14 xend; 15 xsemmin; 16 xsemmax; 17 xkurs (darf kein komma im namen haben); 18 einstellungsdatum; 19 besondere kriterien; 20 studiengang
       singleV.push(vDataStr);
       versuchsArray.push(singleV);
     });
