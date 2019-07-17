@@ -55,8 +55,19 @@
         }
       }
     }
-    fillListe();
-    setupNamenListener();
+    if (listV.length > 0) {
+      fillListe();
+      setupNamenListener();
+    } else {
+      showEmptyVersuch();
+    }
+  }
+
+  function showEmptyVersuch() {
+    let nvDiv = document.getElementById("nvDiv"),
+    text = document.createElement("P");
+    text.innerText = "Für keine Versuche registriert";
+    nvDiv.appendChild(text);
   }
 
   function removeEmptyLvs() {
