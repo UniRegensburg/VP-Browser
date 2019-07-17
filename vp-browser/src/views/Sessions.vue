@@ -30,7 +30,7 @@
     document.getElementById("sessionTitel").innerHTML = strVN;
 
     versuch = myFirebase.getVersuch();
-    let sessionString = versuch.sessions; //schlecht benannt mit sessions
+    let sessionString = versuch.sessions.replace(/~~/g, ""); //schlecht benannt mit sessions
     lockedSessionsString = versuch.lockedSes;
     sArray = sessionString.split("~");
     let lsArray = lockedSessionsString.split("~");
@@ -99,10 +99,9 @@
   function anmeldeFkt() { //TODO sich ansammelnde ~ in db löschen - done
     let sesStr = sArray[checkedIndex],
     userSesStr = "~" + vName + "+" + sesStr, //~ nötig zum splitten
-    lvsStr = sessionStorage.getItem("lvs")+userSesStr,
+    lvsStr = sessionStorage.getItem("lvs").replace(/~~/g, "")+userSesStr,
     newSesStr = lockedSessionsString + "~" + sesStr;
     //console.log(sesStr, userSesStr);
-    lvsStr = lvsStr.replace(/~~/g, ""); //mehrfach ~ entfernen
 
     sessionStorage.setItem("lvs", lvsStr);
     myFirebase.userVAnAbmelden(lvsStr);
