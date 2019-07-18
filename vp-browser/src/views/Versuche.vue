@@ -65,7 +65,7 @@
   kursBoolArray = [],
   studBoolArray = [],
   firstBool = true,
-  katKursCutOf = 1,
+  katKursCutOf = 3, //3 zeigt alle kat, immer nur 2 kurse
   katShowMore = false,
   kursShowMore = false,
   studShowMore = false, //stud ausklappbar machen?
@@ -127,6 +127,8 @@
     filterButton.addEventListener("click", function() {
       filterVersuche();
       filterVersuche(); //filter list sort bugfix? - ja - warum?
+      sortByDate();
+      sortByDate();
     })
   }
 
@@ -402,15 +404,20 @@
 
     //console.log(kursArray);
     //console.log(wipBool);
-
+    //console.log(kursArray);
     for (let i=0; i<kursSortedCounts.length; i++) {
       for (let j=0; j<kursCountArray.length; j++) {
+        //console.log(kursSortedCounts[i], kursCountArray[j][1])
         if (kursSortedCounts[i] == kursCountArray[j][1]) {
+          //console.log("in if");
+          //console.log(kursSortedCounts[i], kursCountArray[j][1])
           let index = 0;
+          //console.log(kursArray);
           for (let k=0; k<kursArray.length; k++) {
+            //console.log(kursCountArray[j][0], kursArray[k])
             if (kursCountArray[j][0] == kursArray[k]) { //TODO wenn gechecked -> gechecked setzen - done
-            //console.log(kursShowMore);
-              if (i<katKursCutOf || kursShowMore) {
+            //console.log(i, katKursCutOf, kursShowMore, i, j, k);
+              if (i<katKursCutOf || kursShowMore) { //i sortiert, js cuttet, wtf, showMore sortiert auch
                 //console.log(kursArray[k]);
                 let itemdiv = document.createElement("DIV"),
                 item = document.createElement("INPUT"),
@@ -449,10 +456,11 @@
                 singleBool.push(kursArray[k])
                 kursBoolArray.push(singleBool);
                 index = k;
+                kursArray.splice(index, 1);
               }
             }
           }
-          kursArray.splice(index, 1);
+          //kursArray.splice(index, 1);
         }
       }
     }
@@ -460,10 +468,25 @@
     if (kursShowMore) {
       createKursShowLess(versuche);
     } else {
+      removeExtraKurse();
       createKursShowMore(versuche);
     }
 
     setKursListener(); //el wird zerstört und neu geladen
+  }
+
+  function removeExtraKurse() {
+    //console.log("remove");
+    let kursDiv = document.getElementById("kursDiv"),
+    children = kursDiv.children;
+    //console.log(kursDiv);
+    //console.log(children, katKursCutOf);
+    for (let i=0; i<children.length; i++) { //button lassen -1?
+      //console.log(i, children[i]);
+      if (katKursCutOf-1 <= i) {
+        kursDiv.removeChild(children[i]);
+      }
+    }
   }
 
   function createKursShowLess(versuche) {
@@ -578,7 +601,7 @@
           for (let k=0; k<studArray.length; k++) {
             if (studCountArray[j][0] == studArray[k]) { //TODO wenn gechecked -> gechecked setzen - done
             //console.log(kursShowMore);
-              //if (i<katKursCutOf || kursShowMore) { //kein cut of
+              //if (j<katKursCutOf || kursShowMore) { //kein cut of
                 //console.log(studArray[k]);
                 let itemdiv = document.createElement("DIV"),
                 item = document.createElement("INPUT"),
@@ -620,7 +643,7 @@
               //}
             }
           }
-          studArray.splice(index, 1);
+          studArray.splice(index, 1); //evtl wie kurs buggy, aber aufgrund des samples egal & no cut of
         }
       }
     }
@@ -713,13 +736,14 @@
       katSortedCounts.push(katCountArray[i][1]);
     }
     katSortedCounts = sortCounts(katSortedCounts);
+    //console.log(katSortedCounts);
     for (let i=0; i<katSortedCounts.length; i++) {
       for (let j=0; j<katCountArray.length; j++) {
         if (katSortedCounts[i] == katCountArray[j][1]) {
           let index = 0;
           for (let k=0; k<katArray.length; k++) {
             if (katCountArray[j][0] == katArray[k]) { //TODO wenn gechecked -> gechecked setzen - done
-              if (i<katKursCutOf || katShowMore) { //i weil erste schleife items zählt
+              if (j<katKursCutOf || katShowMore) { //j weil schleife items zählt
                 //console.log(katArray[k]);
                 let itemdiv = document.createElement("DIV"),
                 item = document.createElement("INPUT"),
@@ -764,6 +788,7 @@
       }
     }
 
+    //console.log(katShowMore);
 
     if (katShowMore) {
       createKatShowLess(versuche);
