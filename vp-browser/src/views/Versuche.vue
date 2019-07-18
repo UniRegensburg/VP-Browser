@@ -38,7 +38,7 @@
           Sortieren nach
           <button><span class="sort" data-sort="name">Name</span></button>
           <button><span class="sort" data-sort="vp">VP-Zahl</span></button>
-          <button><span class="sort" data-sort="einstellung">Einstellung</span></button>
+          <button><span class="sort" id="sortByDate" data-sort="einstellung">Einstellung</span></button>
           <ul class="list"></ul>
         </div>
       </div>
@@ -87,6 +87,12 @@
     setStud(filterArray);
     firstBool = false;
     setAltListener();
+    sortByDate();
+  }
+
+  function sortByDate() {
+    document.getElementById("sortByDate").click();
+    document.getElementById("sortByDate").click();
   }
 
   function fillListe(versuche) {
