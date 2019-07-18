@@ -1,17 +1,22 @@
 <template>
   <div class="main">
-    <h1>Home</h1>
-    <div>
-      <h3>Nächster Versuch</h3>
-      <div id="nvDiv">
-        <ul class="list"></ul>
-      </div>
+    <div id="loginDiv">
+      <button id="loginButton">Login</button>
     </div>
-    <br>
-    <router-link to="versuche">Versuchsliste</router-link>
-    <br>
-    <br>
-    <router-link to="profil">mein Profil</router-link>
+    <div id="homeDiv">
+      <h1>Home</h1>
+      <div>
+        <h3>Nächster Versuch</h3>
+        <div id="nvDiv">
+          <ul class="list"></ul>
+        </div>
+      </div>
+      <br>
+      <router-link to="versuche">Versuchsliste</router-link>
+      <br>
+      <br>
+      <router-link to="profil">mein Profil</router-link>
+    </div>
   </div>
 </template>
 
@@ -27,10 +32,41 @@
   vName = "";
 
   function initHome() {
-    getFirstVersuch();
+    if (sessionStorage.getItem("firstVisit") == null) {
+      showLogin();
+    } else {
+      document.getElementById("loginDiv").style.visibility = "hidden";
+      getFirstVersuch();
+    }
+  }
+
+  function showLogin() {
+    sessionStorage.setItem("firstVisit", "done");
+
+    document.getElementById("app").style.visibility = "hidden";
+    document.getElementById("loginDiv").style.visibility = "visible";
+
+    setupLoginListener();
+  }
+
+  function setupLoginListener() {
+    let btn = document.getElementById("loginButton");
+    loginButton.addEventListener("click", function() {
+      document.getElementById("app").style.visibility = "visible";
+      document.getElementById("loginDiv").style.visibility = "hidden";
+      getFirstVersuch();
+    });
+  }
+
+  function checkForUserinDB() {
+    if (sessionStorage.getItem("benach") == null) {
+      myFirebase.pushNewUser(sessionStorage.getItem("nutzerName"));
+    }
   }
 
   function getFirstVersuch() {
+    checkForUserinDB();
+
     let userVStr = sessionStorage.getItem("lvs"),
     vArray = myFirebase.convertVStrToArray(sessionStorage.getItem("vArrayStr")),
     dateArray = [];

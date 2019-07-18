@@ -24,8 +24,8 @@ Firebase.prototype.getUserDoc = function() { //alt
   });
 };
 
-//Firebase.prototype.pushNewUser = function(name) {
-function pushNewUser(name) {
+Firebase.prototype.pushNewUser = function(name) {
+//function pushNewUser(name) {
   let db = firebase.firestore();
   db.collection("nutzer").doc(name).set({
       name: name,
