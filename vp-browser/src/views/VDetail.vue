@@ -58,7 +58,7 @@
     descr.innerText = "Beschreibung: " + descr.innerText.replace(/~/g, ",");
 
     let special = document.getElementsByClassName("xSpecial")[0];
-    special.innerText = "weitere Kriterien: " + special.innerText;
+    special.innerText = "weitere Kriterien: " + special.innerText.replace(/~/g, ",");
 
     let raum = document.getElementsByClassName("raum")[0];
     raum.innerText = "Raum: " + raum.innerText;
