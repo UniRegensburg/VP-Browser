@@ -8,6 +8,7 @@ import Profil from './views/Profil.vue';
 import Sessions from './views/Sessions.vue';
 import MeineVersuche from './views/meineVersuche.vue';
 import Logout from './views/Logout.vue';
+import Reload from './views/Reload.vue';
 
 Vue.use(Router);
 
@@ -49,6 +50,11 @@ export default new Router({
       path: '/logout',
       name: 'logout',
       component: Logout,
+    },
+    {
+      path: '/reload',
+      name: 'reload',
+      component: Reload,
     },
   ],
 });

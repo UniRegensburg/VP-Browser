@@ -183,4 +183,8 @@ Firebase.prototype.getVersuch = function() {
   }
 }
 
+Firebase.prototype.reloadData = function() {
+  //TODO db zwischen Versuche auf selben stand zu bringen
+}
+
 export default Firebase;
