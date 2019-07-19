@@ -417,7 +417,8 @@
             //console.log(kursCountArray[j][0], kursArray[k])
             if (kursCountArray[j][0] == kursArray[k]) { //TODO wenn gechecked -> gechecked setzen - done
             //console.log(i, katKursCutOf, kursShowMore, i, j, k);
-              if (i<katKursCutOf || kursShowMore) { //i sortiert, js cuttet, wtf, showMore sortiert auch
+              //if (i<katKursCutOf || kursShowMore) { //i sortiert, js cuttet, wtf, showMore sortiert auch
+              if (kursCountArray[j][1] > 1 || kursShowMore) { //i sortiert, js cuttet, wtf, showMore sortiert auch
                 //console.log(kursArray[k]);
                 let itemdiv = document.createElement("DIV"),
                 item = document.createElement("INPUT"),
@@ -468,7 +469,7 @@
     if (kursShowMore) {
       createKursShowLess(versuche);
     } else {
-      removeExtraKurse();
+      //removeExtraKurse();
       createKursShowMore(versuche);
     }
 
@@ -743,7 +744,8 @@
           let index = 0;
           for (let k=0; k<katArray.length; k++) {
             if (katCountArray[j][0] == katArray[k]) { //TODO wenn gechecked -> gechecked setzen - done
-              if (j<katKursCutOf || katShowMore) { //j weil schleife items zählt
+              //if (i<katKursCutOf || katShowMore) { //j cuttet zu früh, i garnicht
+              if (katCountArray[j][1] > 1 || katShowMore) { //j cuttet zu früh, i garnicht
                 //console.log(katArray[k]);
                 let itemdiv = document.createElement("DIV"),
                 item = document.createElement("INPUT"),
@@ -780,10 +782,11 @@
                 singleBool.push(katArray[k]);
                 katBoolArray.push(singleBool);
                 index = k;
+                katArray.splice(index, 1); //wo splice egal
               }
             }
           }
-          katArray.splice(index, 1);
+          //katArray.splice(index, 1);
         }
       }
     }
@@ -793,11 +796,26 @@
     if (katShowMore) {
       createKatShowLess(versuche);
     } else {
+      //removeExtraKats();
       createKatShowMore(versuche);
     }
 
     setKatListener();
     //listener werden bei neu laden gelöscht, weil el neu erstellt -> neu setzen
+  }
+
+  function removeExtraKats() {
+    //console.log("remove");
+    let katDiv = document.getElementById("katDiv"),
+    children = katDiv.children;
+    //console.log(kursDiv);
+    //console.log(children, katKursCutOf);
+    for (let i=0; i<children.length; i++) { //button lassen -1?
+      //console.log(i, children[i]);
+      if (katKursCutOf-1 < i+1) {
+        katDiv.removeChild(children[i]);
+      }
+    }
   }
 
   function createKatShowLess(versuche) {

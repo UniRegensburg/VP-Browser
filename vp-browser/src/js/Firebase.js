@@ -89,7 +89,7 @@ Firebase.prototype.lockedSesUpdate = function(str, name) { //bsp fkt
 
 //start
 Firebase.prototype.getUser = function() {
-  console.log(new Date().getTime());
+  //console.log(new Date().getTime());
   let db = firebase.firestore(),
   nName = sessionStorage.getItem("nutzerName"),
   myPromise = new Promise(function (resolve, reject) {

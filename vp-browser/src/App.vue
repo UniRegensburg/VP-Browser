@@ -34,10 +34,10 @@
               sessionStorage.setItem("benach", inhalt.benach);
               sessionStorage.setItem("lvs", inhalt.lvs);
               //return(inhalt);
-              console.log(new Date().getTime());
+              //console.log(new Date().getTime());
           });
       });
-      console.log(new Date().getTime());
+      //console.log(new Date().getTime());
       myFirebase.getAllVersuche().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           //console.log(`${doc.id} => ${doc.data()}`);
@@ -49,6 +49,7 @@
           singleV.push(vDataStr);
           versuchsArray.push(singleV);
         })
+        //console.log(versuchsArray);
         sessionStorage.setItem("vArrayStr", versuchsArray);
         });
       //console.log(sessionStorage.getItem("vArrayStr"));

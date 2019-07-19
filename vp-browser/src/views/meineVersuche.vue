@@ -121,11 +121,11 @@
     listV = [];
     userV = userVStr.split("~"); //versucht nach ersten durchlauf mit etwas nicht vorhandenem zu splitten
     removeEmptyLvs();
-    console.log(userV);
+    //console.log(userV);
 
     for (let i=0; i<userV.length; i++) {
       userV[i] = userV[i].split("+");
-      console.log(userV[i]);
+      //console.log(userV[i]);
       //versucht nach ersten durchlauf mit etwas nicht vorhandenem zu splitten
       for (let j=0; j<vArray.length; j++) {
         if (userV[i][0] == vArray[j].name) {
@@ -133,7 +133,7 @@
           let wipArray = vArray[j];
           wipArray["termin"] = userV[i][1]; //termin immer der letzte mit dem versuchsnamen
           //andere lsg: für einen versuch nur einmal anmelden mgl (versuche mit mehr sitzungen außen vor)
-          console.log(userV[i][1], wipArray);
+          //console.log(userV[i][1], wipArray);
           listV.push(wipArray);
           //vArray[j]["termin"] = userV[i][1];
           //console.log(vArray[j], userV[i][1]);
@@ -145,11 +145,11 @@
     /*
     for (let i=0; i<vArray.length; i++) {
       for (let j=0; j<userV.length; j++) {
-        console.log(userV[j]); //mal string, mal array-wtf
+        //console.log(userV[j]); //mal string, mal array-wtf
         //userV[j] = userV[j].split("+");
         if (userV[j][0] == vArray[i].name) {
           vArray[i]["termin"] = userV[j][1];
-          console.log(vArray[i], userV[j][1]);
+          //console.log(vArray[i], userV[j][1]);
           listV.push(vArray[i]);
         }
       }
