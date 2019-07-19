@@ -6,8 +6,7 @@
         <h3>Filter</h3>
         <p>Semester von:<input type="number" id="semMin" min="1" max="4"> bis:<input type="number" id="semMax" min="1" max="8"></p>
         <p>VP-Zahl von:<input type="number" id="vpzMin" min="0" max="3" step="0.25"> bis:<input type="number" id="vpzMax" min="0.25" max="4" step="0.25"></p>
-        <p>Start ab: <input type="date" id="startDate"></p>
-        <p>Ende bis: <input type="date" id="endDate"></p>
+        <p>Datum: <input type="date" id="vDate"></p>
         <!-- min und max programatisch bestimmen -->
         <div>
           <h4>Kategorien</h4>
@@ -26,7 +25,7 @@
         </div>
         <div>
           <hr>
-          <p><input type="checkbox" id="oldCheck">abgeschlossene Versuche</p>
+          <p><input type="checkbox" id="oldCheck">abgelaufene Versuche</p>
         </div>
         <br>
         <button id="updateFilter">Filten anwenden</button>
@@ -69,7 +68,9 @@
   katShowMore = false,
   kursShowMore = false,
   studShowMore = false, //stud ausklappbar machen?
-  oldCheck = false;
+  oldCheck = false,
+  dateCheck = false,
+  userDate = "";
 
 
   //TODO: / bugs: kat oder kurs auswahl zeigt beim gegenpart alle einträge
@@ -85,6 +86,7 @@
     setKategorien(filterArray);
     setKurse(filterArray);
     setStud(filterArray);
+    setDateInputMinMax(filterArray);
     firstBool = false;
     setAltListener();
     sortByDate();
@@ -104,9 +106,9 @@
     setExtraText();
     if(!firstBool) { //TODO: array übergeben, vorheriges zu beginn leeren - done
     //TODO nichtmehr nötig weil filterVersuche jetz erster aufruf
-      setKategorien(versuche);
-      setKurse(versuche);
-      setKategorien(versuche);
+      //setKategorien(versuche);
+      //setKurse(versuche);
+      //setKategorien(versuche); //doppelt?
     }
     setupNamenListener();
     //setDateInputMinMax(versuche);
@@ -146,13 +148,15 @@
       //console.log("sem"+i);
         if(vpzMin <= vArray[i].vp && vArray[i].vp <= vpzMax) {
           //console.log("vpz"+i);
-          let date1 = new Date(startDate),
-          date2 = new Date(endDate),
+          //let date1 = new Date(startDate),
+          //date2 = new Date(endDate),
+          let uDate = new Date(userDate),
           vDate1 = new Date(vArray[i].xStart),
           vDate2 = new Date(vArray[i].xEnd);
           //console.log(date1-vDate1);
           //console.log(date2-vDate2);
-          if ((date1-vDate1)<=0 && (date2-vDate2)>=0) { //TODO logik - done
+          //if ((date1-vDate1)<=0 && (date2-vDate2)>=0) { //TODO logik - done
+          if ((!(dateCheck)) || ((uDate-vDate1)>0 && (vDate2-uDate)>0)) {
             //console.log("date"+i);
             let vArrayTypSplit = vArray[i].typ.split("~");
             for (let j=0; j<vArrayTypSplit.length; j++) {
@@ -160,8 +164,10 @@
                 //filterArray.push(vArray[i]);
                 if (checkedKurse.includes(vArray[i].xKurs) || checkedKurse.length === 0) {
                   if (checkedStud.includes(vArray[i].studiengang) || checkedStud.length === 0) {
-                    if((vArray[i].aktiv == "true") || oldCheck) {
+                    if((vArray[i].aktiv == "true") && (oldCheck == false)) {
                       //console.log(vArray[i].name, vArray[i].aktiv, oldCheck);
+                      filterArray.push(vArray[i]);
+                    } else if ((vArray[i].aktiv == "false") && (oldCheck == true)){
                       filterArray.push(vArray[i]);
                     }
                   }
@@ -269,6 +275,17 @@
   }
 
   function setupDateListener() {
+    let userDateEl = document.getElementById("vDate");
+    userDateEl.addEventListener("input", function() {
+      if (userDateEl.value != "") {
+        userDate = userDateEl.value;
+        dateCheck = true;
+      } else {
+        userDate = "";
+        dateCheck = false;
+      }
+    });
+    /*
     let startDateEl = document.getElementById("startDate"),
     endDateEl = document.getElementById("endDate");
 
@@ -287,6 +304,7 @@
        endDate = "2999-12-31";
       }
     });
+    */
   }
 
   function setDateInputMinMax(versuche) {
@@ -294,8 +312,9 @@
     endDates = [],
     startMinMax,
     endMinMax,
-    startDateEl = document.getElementById("startDate"),
-    endDateEl = document.getElementById("endDate");
+    userDateEl = document.getElementById("vDate");
+    //startDateEl = document.getElementById("startDate"),
+    //endDateEl = document.getElementById("endDate");
 
     for (let i=0; i<versuche.length; i++) {
       //let startDateWip = new Date(versuche[i].xStart),
@@ -313,10 +332,12 @@
     let startMaxIndex = startMinMax.length-1,
     endMaxIndex = endMinMax.length-1;
 
-    startDateEl.min = startMinMax[0];
-    startDateEl.max = startMinMax[startMaxIndex];
-    endDateEl.min = endMinMax[0];
-    endDateEl.max = endMinMax[endMaxIndex];
+    userDateEl.min = startMinMax[0];
+    userDateEl.max = endMinMax[endMaxIndex];
+    //startDateEl.min = startMinMax[0];
+    //startDateEl.max = startMinMax[startMaxIndex];
+    //endDateEl.min = endMinMax[0];
+    //endDateEl.max = endMinMax[endMaxIndex];
   }
 
   function getSortedDateFromArray(dateArray) {
