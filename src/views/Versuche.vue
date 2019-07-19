@@ -109,9 +109,9 @@
       setKategorien(versuche);
     }
     setupNamenListener();
-    setDateInputMinMax(versuche);
-    setSemesterMinMax(versuche);
-    setVPZMinMax(versuche);
+    //setDateInputMinMax(versuche);
+    //setSemesterMinMax(versuche);
+    //setVPZMinMax(versuche);
   }
 
   function setupFilterListeners() {
