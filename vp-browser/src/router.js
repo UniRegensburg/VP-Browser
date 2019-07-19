@@ -7,6 +7,7 @@ import VDetail from './views/VDetail.vue';
 import Profil from './views/Profil.vue';
 import Sessions from './views/Sessions.vue';
 import MeineVersuche from './views/meineVersuche.vue';
+import Logout from './views/Logout.vue';
 
 Vue.use(Router);
 
@@ -43,6 +44,11 @@ export default new Router({
       path: '/mv',
       name: 'mv',
       component: MeineVersuche,
+    },
+    {
+      path: '/logout',
+      name: 'logout',
+      component: Logout,
     },
   ],
 });

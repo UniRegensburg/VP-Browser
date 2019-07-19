@@ -1,7 +1,12 @@
 <template>
   <div class="main">
     <div id="loginDiv">
-      <button id="loginButton">Login</button>
+      </br>
+      <input id="loginNameIn" placeholder="RZ-Name"><br>
+      <input id="loginPwIn" placeholder="Passwort" type="password"></br>
+      <input type="checkbox">Remember me</br>
+      <button id="loginButton">Log in</button>
+      <p id="falseLogin">Falscher Nutzername oder Passwort</p>
     </div>
     <div id="homeDiv">
       <h1>Home</h1>
@@ -29,22 +34,28 @@
   let myFirebase = new Firebase(),
   userV = [],
   listV = [],
-  vName = "";
+  vName = "",
+  wantedName = "vip12345",
+  wantedPw = "experi";
 
   function initHome() {
-    if (sessionStorage.getItem("firstVisit") == null) {
+    document.getElementById("falseLogin").style.visibility = "hidden";
+    if ((sessionStorage.getItem("firstVisit") == null) || (sessionStorage.getItem("logout") == "true")) {
       showLogin();
     } else {
-      document.getElementById("loginDiv").style.visibility = "hidden";
+      document.getElementById("loginDiv").innerHTML = "";
       getFirstVersuch();
     }
   }
 
   function showLogin() {
-    sessionStorage.setItem("firstVisit", "done");
+    sessionStorage.setItem("logout", "false");
 
     document.getElementById("app").style.visibility = "hidden";
     document.getElementById("loginDiv").style.visibility = "visible";
+    document.getElementById("nav").style.visibility = "visible" //nav sichtbar
+    document.getElementById("nav").children[0].style.visibility = "hidden" //ul unsichtbar -> roter strich
+
 
     setupLoginListener();
   }
@@ -52,10 +63,25 @@
   function setupLoginListener() {
     let btn = document.getElementById("loginButton");
     loginButton.addEventListener("click", function() {
-      document.getElementById("app").style.visibility = "visible";
-      document.getElementById("loginDiv").style.visibility = "hidden";
-      getFirstVersuch();
+      if (checkLogin()) {
+        sessionStorage.setItem("firstVisit", "done");
+        document.getElementById("app").style.visibility = "visible";
+        document.getElementById("nav").children[0].style.visibility = "visible"
+        document.getElementById("falseLogin").style.visibility = "hidden";
+        document.getElementById("loginDiv").innerHTML = "";
+        getFirstVersuch();
+      } else {
+        document.getElementById("falseLogin").style.visibility = "visible";
+      }
     });
+  }
+
+  function checkLogin() {
+    let inputName = document.getElementById("loginNameIn").value,
+    inputPw = document.getElementById("loginPwIn").value;
+    if ((inputName == wantedName) && (inputPw == wantedPw)) {
+      return(true);
+    }
   }
 
   function checkForUserinDB() {
@@ -182,3 +208,12 @@
     mounted: function() {initHome();},
   };
 </script>
+
+<style>
+  #loginDiv {
+    text-align: center;
+  }
+  #falseLogin {
+    color: red;
+  }
+</style>
