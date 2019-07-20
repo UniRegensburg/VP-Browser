@@ -108,10 +108,22 @@
     let inputs = document.getElementsByTagName("input");
 
     inputs[0].value = sessionStorage.getItem("semMin");
+    semMin = sessionStorage.getItem("semMin");
     inputs[1].value = sessionStorage.getItem("semMax");
+    if (sessionStorage.getItem("semMax") != "") {
+      semMax = sessionStorage.getItem("semMax");
+    }
     inputs[2].value = sessionStorage.getItem("vpzMin");
+    vpzMin = sessionStorage.getItem("vpzMin");
     inputs[3].value = sessionStorage.getItem("vpzMax");
+    if (sessionStorage.getItem("vpzMax") != "") {
+      vpzMax = sessionStorage.getItem("vpzMax");
+    }
     inputs[4].value = sessionStorage.getItem("vDate");
+    if (sessionStorage.getItem("vDate") != "") {
+      userDate = sessionStorage.getItem("vDate");
+      dateCheck = true;
+    }
 
     for (let i=5; i<inputs.length; i++) {
       if (inputs[i].name === "kat") {
@@ -234,7 +246,7 @@
   }
 
   function filterVersuche() {
-    //console.log(semMin, semMax, vpzMin, vpzMax, startDate, endDate);
+    console.log(semMin, semMax, vpzMin, vpzMax, userDate);
     //console.log("filter");
     filterArray = [];
     let checkedKats = getCheckedKats(),
