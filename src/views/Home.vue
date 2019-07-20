@@ -56,8 +56,29 @@
     document.getElementById("nav").style.visibility = "visible" //nav sichtbar
     document.getElementById("nav").children[0].style.visibility = "hidden" //ul unsichtbar -> roter strich
 
-
     setupLoginListener();
+    setNameListener();
+    setPwListener();
+  }
+
+  function setNameListener() {
+    let pwIn = document.getElementById("loginNameIn"),
+    btn = document.getElementById("loginButton");
+    pwIn.addEventListener("keyup", function() {
+      if(event.key === "Enter") {
+        btn.click();
+      }
+    });
+  }
+
+  function setPwListener() {
+    let pwIn = document.getElementById("loginPwIn"),
+    btn = document.getElementById("loginButton");
+    pwIn.addEventListener("keyup", function() {
+      if(event.keyCode === 13) {
+        btn.click();
+      }
+    });
   }
 
   function setupLoginListener() {

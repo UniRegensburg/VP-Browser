@@ -27,13 +27,13 @@
           <hr>
           <p><input type="checkbox" id="oldCheck">abgelaufene Versuche</p>
         </div>
-        <br>
-        <button id="updateFilter">Filten anwenden</button>
+        <!--<br>
+        <button id="updateFilter">Filten anwenden</button>-->
       </div>
       <div id="vlRechts">
         <h3>Einträge</h3>
         <div id="vListDiv">
-          <input class="search" placeholder="Suche"/>
+          <input class="search" placeholder="Suche" id="searchBox"/>
           Sortieren nach
           <button><span class="sort" data-sort="name">Name</span></button>
           <button><span class="sort" data-sort="vp">VP-Zahl</span></button>
@@ -80,16 +80,112 @@
     vArray = myFirebase.convertVStrToArray(sessionStorage.getItem("vArrayStr"));
     //console.log(vArray);
 
-    filterVersuche();
+    loadShowMoreFilter();
+
+    //filterVersuche();
     //setupNamenListener();
     setupFilterListeners();
-    setKategorien(filterArray);
-    setKurse(filterArray);
-    setStud(filterArray);
-    setDateInputMinMax(filterArray);
+    setKategorien(vArray);
+    setKurse(vArray);
+    setStud(vArray);
+    loadPrevFilter()
+
+    filterVersuche();
+
+    //setKategorien(filterArray);
+    //setKurse(filterArray);
+    //setStud(filterArray);
+    setDateInputMinMax(vArray); //wo egal eig
     firstBool = false;
     setAltListener();
     sortByDate();
+    //setupEnterListener(); //durch update bei input evenet redundant
+    setupSearchUpdater(); //wo eig egal
+  }
+
+  function loadPrevFilter() {
+    //katBoolArray = [];
+    let inputs = document.getElementsByTagName("input");
+
+    inputs[0].value = sessionStorage.getItem("semMin");
+    inputs[1].value = sessionStorage.getItem("semMax");
+    inputs[2].value = sessionStorage.getItem("vpzMin");
+    inputs[3].value = sessionStorage.getItem("vpzMax");
+    inputs[4].value = sessionStorage.getItem("vDate");
+
+    for (let i=5; i<inputs.length; i++) {
+      if (inputs[i].name === "kat") {
+        let idStr = "kat~" + inputs[i].value;
+        inputs[i].checked = conStrToBool(sessionStorage.getItem(idStr));
+        katBoolArray[inputs[i].value][0] = conStrToBool(sessionStorage.getItem(idStr));
+      } else if (inputs[i].name === "kurs") {
+        let idStr = "kurs~" + inputs[i].value;
+        inputs[i].checked = conStrToBool(sessionStorage.getItem(idStr));
+        kursBoolArray[inputs[i].value][0] = conStrToBool(sessionStorage.getItem(idStr));
+      } else if (inputs[i].name === "kurs") {
+        let idStr = "stud~" + inputs[i].value;
+        inputs[i].checked = conStrToBool(sessionStorage.getItem(idStr));
+        studBoolArray[inputs[i].value][0] = conStrToBool(sessionStorage.getItem(idStr));
+      } else if (inputs[i].id === "oldCheck") {
+      inputs[i].checked = conStrToBool(sessionStorage.getItem("oldCheck"));
+      oldCheck = conStrToBool(sessionStorage.getItem("oldCheck"));
+      } else {
+        inputs[i].value = sessionStorage.getItem("inputSearch");
+      }
+    }
+    //console.log("load done");
+    //filterAnwenden();
+  }
+
+  function conStrToBool(inStr) {
+    if (inStr == "true") {
+      return(true);
+    } else {
+      return(false);
+    }
+  }
+
+  function loadShowMoreFilter() {
+    katShowMore = conStrToBool(sessionStorage.getItem("katShowMore"));
+    kursShowMore = conStrToBool(sessionStorage.getItem("kursShowMore"));
+  }
+
+  function setPrevFilter() {
+    let inputs = document.getElementsByTagName("input");
+    //i: 0-4 sem-datum, 5-length-2 checkboxes; length-1 search
+    for (let i=0; i<inputs.length; i++) {
+      if (i<5) {
+        sessionStorage.setItem(inputs[i].id, inputs[i].value)
+      } else if (i<inputs.length-2) {
+        let idStr = inputs[i].name + "~" + inputs[i].value;
+        sessionStorage.setItem(idStr, inputs[i].checked);
+      } else if (i<inputs.length-1) {
+        sessionStorage.setItem("oldCheck", inputs[i].checked);
+      } else {
+        sessionStorage.setItem("inputSearch", inputs[i].value);
+      }
+    }
+
+    sessionStorage.setItem("katShowMore", katShowMore);
+    sessionStorage.setItem("kursShowMore", kursShowMore);
+  }
+
+  function setupSearchUpdater() {
+    let searchBox = document.getElementById("searchBox");
+    searchBox.addEventListener("input", setPrevFilter);
+  }
+
+  function setupEnterListener() {
+    let inputs = document.getElementsByTagName("input"),
+    btn = document.getElementById("updateFilter");
+    for (let i=0; i<5; i++) { //anfang keyboard input
+      inputs[i].addEventListener("keyup", function() {
+        if(event.key === "Enter") {
+          //btn.click();
+          filterAnwenden();
+        }
+      });
+    }
   }
 
   function sortByDate() {
@@ -112,8 +208,8 @@
     }
     setupNamenListener();
     //setDateInputMinMax(versuche);
-    //setSemesterMinMax(versuche);
-    //setVPZMinMax(versuche);
+    setSemesterMinMax(vArray);
+    setVPZMinMax(vArray);
   }
 
   function setupFilterListeners() {
@@ -121,21 +217,25 @@
     setupSemesterListener();
     setupVPListener();
 
-    setFilterAnwenden();
+    //setFilterAnwendenButton(); //eig unnütz
   }
 
-  function setFilterAnwenden() {
+  function setFilterAnwendenButton() { //button redundant?
     let filterButton = document.getElementById("updateFilter");
-    filterButton.addEventListener("click", function() {
-      filterVersuche();
-      filterVersuche(); //filter list sort bugfix? - ja - warum?
-      sortByDate();
-      sortByDate();
-    })
+    filterButton.addEventListener("click", filterAnwenden);
+  }
+
+  function filterAnwenden() {
+    setPrevFilter();
+    filterVersuche();
+    filterVersuche(); //filter list sort bugfix? - ja - warum?
+    sortByDate();
+    sortByDate();
   }
 
   function filterVersuche() {
     //console.log(semMin, semMax, vpzMin, vpzMax, startDate, endDate);
+    //console.log("filter");
     filterArray = [];
     let checkedKats = getCheckedKats(),
     checkedKurse = getCheckedKurse(),
@@ -144,8 +244,9 @@
     document.getElementById("vListDiv").children[4].innerHTML = ""; //ul element
     //nach sem, vp, datum einzeln filtern, jeweils vNamen zurückgeben und dann schauen?
     for (let i=0; i<vArray.length; i++) {
-      if(semMin <= vArray[i].xSemMin && vArray[i].xSemMax <= semMax) { //TODO logik - done?-!
-      //console.log("sem"+i);
+      //console.log(vArray[i].xSemMax, semMax);
+      if(semMin <= vArray[i].xSemMin && parseInt(vArray[i].xSemMax) <= parseInt(semMax)) { //TODO logik - done?-!
+        //console.log(vArray[i].xSemMax, semMax);
         if(vpzMin <= vArray[i].vp && vArray[i].vp <= vpzMax) {
           //console.log("vpz"+i);
           //let date1 = new Date(startDate),
@@ -194,6 +295,7 @@
       } else {
         vpzMin = 0.0;
       }
+      filterAnwenden();
     });
 
     vpzMaxEl.addEventListener("input", function() {
@@ -202,6 +304,7 @@
       } else {
         vpzMax = 99.0;
       }
+      filterAnwenden();
     });
   }
 
@@ -232,6 +335,7 @@
       } else {
         semMin = 0;
       }
+      filterAnwenden();
     });
 
     semMaxEl.addEventListener("input", function() {
@@ -240,6 +344,7 @@
       } else {
         semMax = 99;
       }
+      filterAnwenden();
     });
 
     //setSemesterMinMax();
@@ -284,8 +389,9 @@
         userDate = "";
         dateCheck = false;
       }
+      filterAnwenden();
     });
-    /*
+    /* alt
     let startDateEl = document.getElementById("startDate"),
     endDateEl = document.getElementById("endDate");
 
@@ -426,6 +532,7 @@
     //console.log(kursArray);
     //console.log(wipBool);
     //console.log(kursArray);
+    let counter = 0;
     for (let i=0; i<kursSortedCounts.length; i++) {
       for (let j=0; j<kursCountArray.length; j++) {
         //console.log(kursSortedCounts[i], kursCountArray[j][1])
@@ -448,7 +555,7 @@
                 itemdiv.class = "inlineP";
                 item.type = "checkbox";
                 item.name = "kurs";
-                item.value = i;
+                item.value = counter;
                 //item.checked = true; //fkt nicht
 
                 itemdiv.appendChild(item);
@@ -479,6 +586,7 @@
                 kursBoolArray.push(singleBool);
                 index = k;
                 kursArray.splice(index, 1);
+                counter += 1;
               }
             }
           }
@@ -521,6 +629,7 @@
     btn.addEventListener("click", function() {
       kursShowMore = false;
       setKurse(versuche);
+      setPrevFilter();
     });
   }
 
@@ -534,6 +643,7 @@
     btn.addEventListener("click", function() {
       kursShowMore = true;
       setKurse(versuche);
+      setPrevFilter();
     });
   }
 
@@ -544,6 +654,7 @@
         kursBoolArray[i][0] = kurse[i].checked;
         //console.log(kursBoolArray);
         //kurse[i].checked = true;
+        filterAnwenden();
       })
     }
   }
@@ -615,7 +726,7 @@
 
     //console.log(studArray);
     //console.log(wipBool);
-
+    let counter = 0;
     for (let i=0; i<studSortedCounts.length; i++) {
       for (let j=0; j<studCountArray.length; j++) {
         if (studSortedCounts[i] == studCountArray[j][1]) {
@@ -632,12 +743,21 @@
                 itemdiv.class = "inlineP";
                 item.type = "checkbox";
                 item.name = "stud";
-                item.value = i;
-                //item.checked = true; //fkt nicht
+                console.log(counter);
+                //item.value = counter; //wieso fkt nicht?, fkt bei kat und kurs
+                console.log(item);
+
+                //hat leere value ohne zuweisung in elements
+                //in console richtig
 
                 itemdiv.appendChild(item);
                 itemdiv.innerHTML += studArray[k] + "</br>";
+                //console.log(itemdiv);
+                //itemdiv.children[0].value = counter; //setzt we
                 studDiv.appendChild(itemdiv);
+
+                //console.log(studDiv);
+                //studDiv.children[0].children[counter].value = counter; //setzt value aber macht error
 
                 for (let l=0; l<wipBool.length; l++) {
                   if (wipBool[l][1] == studArray[k] && wipBool[l][0]) {
@@ -659,9 +779,10 @@
                 }
 
                 //singleBool.push(false);
-                singleBool.push(studArray[k])
+                singleBool.push(studArray[k]);
                 studBoolArray.push(singleBool);
                 index = k;
+                counter += 1;
               //}
             }
           }
@@ -675,10 +796,12 @@
   function setStudListener() {
     let stud = document.getElementsByName("stud");
     for (let i=0; i<stud.length; i++) {
+      //stud[i].value = 99;
       stud[i].addEventListener("input", function() {
         studBoolArray[i][0] = stud[i].checked;
         //console.log(studBoolArray);
         //stud[i].checked = true;
+        filterAnwenden();
       })
     }
   }
@@ -757,6 +880,7 @@
     for (let i=0; i<katCountArray.length; i++) {
       katSortedCounts.push(katCountArray[i][1]);
     }
+    let counter = 0;
     katSortedCounts = sortCounts(katSortedCounts);
     //console.log(katSortedCounts);
     for (let i=0; i<katSortedCounts.length; i++) {
@@ -775,7 +899,9 @@
                 itemdiv.class = "inlineP"
                 item.type = "checkbox";
                 item.name = "kat";
-                item.value = i;
+                //console.log(j)
+                item.value = counter;
+                //console.log(item);
 
                 itemdiv.appendChild(item);
                 itemdiv.innerHTML += katArray[k] + "</br>";
@@ -803,7 +929,11 @@
                 singleBool.push(katArray[k]);
                 katBoolArray.push(singleBool);
                 index = k;
+                //console.log(katArray[k]);
                 katArray.splice(index, 1); //wo splice egal
+                //break;
+                counter += 1;
+                //break;
               }
             }
           }
@@ -812,7 +942,7 @@
       }
     }
 
-    //console.log(katShowMore);
+    //console.log(katBoolArray);
 
     if (katShowMore) {
       createKatShowLess(versuche);
@@ -848,7 +978,8 @@
 
     btn.addEventListener("click", function() {
       katShowMore = false;
-      setKategorien(versuche);
+      setKategorien(versuche); //TODO vArray?
+      setPrevFilter();
     });
   }
 
@@ -862,6 +993,7 @@
     btn.addEventListener("click", function() {
       katShowMore = true;
       setKategorien(versuche);
+      setPrevFilter();
     });
   }
 
@@ -871,6 +1003,7 @@
       kats[i].addEventListener("input", function() {
         katBoolArray[i][0] = kats[i].checked;
         //console.log(katBoolArray);
+        filterAnwenden();
       })
     }
   }
@@ -878,6 +1011,7 @@
   function getCheckedKats() {
     let katDiv = document.getElementById("katDiv").children,
     katReturnArray = [];
+    //console.log(katBoolArray, katDiv);
     for (let i=0; i<katBoolArray.length; i++) {
       if (katBoolArray[i][0]) {
         katReturnArray.push(katDiv[i].innerText.slice(0, -1));
@@ -892,6 +1026,7 @@
     let altCheck = document.getElementById("oldCheck");
     altCheck.addEventListener("input", function() {
       oldCheck = altCheck.checked;
+      filterAnwenden();
     })
   }
 

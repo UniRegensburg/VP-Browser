@@ -46,7 +46,7 @@
     name.innerText = name.innerText.replace(/_/g, " ");
 
     let typ = document.getElementsByClassName("typ")[0];
-    typ.innerText = "Typ: " + typ.innerText;
+    typ.innerText = "Typ: " + typ.innerText.replace(/~/g, ", ");
 
     let dauer = document.getElementsByClassName("dauer")[0];
     dauer.innerText = "Dauer: " + dauer.innerText + "h";
