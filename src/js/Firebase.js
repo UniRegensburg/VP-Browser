@@ -185,6 +185,41 @@ Firebase.prototype.getVersuch = function() {
 
 Firebase.prototype.reloadData = function() {
   //TODO db zwischen Versuche auf selben stand zu bringen
+  let db = firebase.firestore(),
+  vipLvs = "~Eyetracking-Experiment+2019-08-09 12:00~",
+  eyeLocked = "2019-07-26 14:00~2019-07-22 13:00~2019-08-09 12:00",
+  navLocked = "2019-07-22 12:15~",
+  appLocked = "2019-07-11 16:00~2019-07-11 17:30~2019-07-12 11:00~2019-07-12 12:30~2019-07-12 14:00~2019-07-12 15:30~2019-07-12 18:30",
+  eyeId = "Eyetracking-Experiment",
+  navId = "Navigations-Studie",
+  appId = "Test_einer_Übersetzungsapp";
+
+  db.collection("nutzer").doc("vip12345").update({
+      lvs: vipLvs,
+      benach: 0
+  })
+  .then(function() {
+      //console.log("Document successfully updated!");
+  });
+
+  db.collection("versuche").doc(eyeId).update({
+      lockedSes: eyeLocked
+  })
+  .then(function() {
+      //console.log("Document successfully updated!");
+  });
+  db.collection("versuche").doc(navId).update({
+      lockedSes: navLocked
+  })
+  .then(function() {
+      //console.log("Document successfully updated!");
+  });
+  db.collection("versuche").doc(appId).update({
+      lockedSes: navLocked
+  })
+  .then(function() {
+      //console.log("Document successfully updated!");
+  });
 }
 
 export default Firebase;

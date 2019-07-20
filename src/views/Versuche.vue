@@ -110,17 +110,17 @@
     inputs[0].value = sessionStorage.getItem("semMin");
     semMin = sessionStorage.getItem("semMin");
     inputs[1].value = sessionStorage.getItem("semMax");
-    if (sessionStorage.getItem("semMax") != "") {
+    if ((sessionStorage.getItem("semMax") != "") && (sessionStorage.getItem("semMax") != null)) {
       semMax = sessionStorage.getItem("semMax");
     }
     inputs[2].value = sessionStorage.getItem("vpzMin");
     vpzMin = sessionStorage.getItem("vpzMin");
     inputs[3].value = sessionStorage.getItem("vpzMax");
-    if (sessionStorage.getItem("vpzMax") != "") {
+    if ((sessionStorage.getItem("vpzMax") != "") && (sessionStorage.getItem("vpzMax") != null)) {
       vpzMax = sessionStorage.getItem("vpzMax");
     }
     inputs[4].value = sessionStorage.getItem("vDate");
-    if (sessionStorage.getItem("vDate") != "") {
+    if ((sessionStorage.getItem("vDate") != "") && (sessionStorage.getItem("vDate") != null)) {
       userDate = sessionStorage.getItem("vDate");
       dateCheck = true;
     }
