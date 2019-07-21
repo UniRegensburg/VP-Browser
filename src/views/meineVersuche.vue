@@ -15,7 +15,6 @@
 <script>
   // @ is an alias to /src
   //import HelloWorld from '@/components/HelloWorld.vue';
-  //console.log("home");
 
   import Firebase from '../js/Firebase';
 
@@ -37,25 +36,17 @@
   function setAbmeldeButton() {
     let button = document.getElementById("abmeldeB"),
     lvsStr = sessionStorage.getItem("lvs");
-    //console.log(lvsStr);
     button.addEventListener("click", function() {
-      //console.log(userV);
       for (let i=0; i<userV.length; i++) {
         if (userV[i][2]) {
-          //console.log(userV[i]);
           let wipStr = userV[i][0] + "+" + userV[i][1];
-          //console.log(wipStr);
           lvsStr = lvsStr.replace(wipStr, "");
-          //console.log(lvsStr);
           sessionStorage.setItem("lvs", lvsStr);
           myFirebase.userVAnAbmelden(lvsStr);
-          //a_versuch+2019-01-17 12:00~d+2019-01-17 10:00
           for (let j=0; j<vArray.length; j++) {
             if (vArray[j].name == userV[i][0]) {
               let lockedSesStr = vArray[j].lockedSes;
-              //console.log(lockedSesStr);
               lockedSesStr = lockedSesStr.replace(userV[i][1], "");
-              //console.log(lockedSesStr);
               vArray[j].lockedSes = lockedSesStr;
               myFirebase.lockedSesUpdate(lockedSesStr, vArray[j].name);
             }
@@ -80,21 +71,16 @@
 
   function resetListener() {
     let boxen = document.getElementsByName("mvCheck");
-    //console.log(boxen);
     for (let i=0; i<boxen.length; i++) {
       boxen[i].removeEventListener("input", listenForCheck);
       boxen[i].addEventListener("input", listenForCheck);
     }
-    //console.log(userV);
   }
 
   function listenForCheck() {
-    //console.log(event.path[1].children[1].innerText, event.path[1].children[0].checked);
     for (let i=0; i<userV.length; i++) {
-      //console.log(event.path[1].children[2].innerText);
       if ((userV[i][0] == event.path[1].children[1].innerText) && event.path[1].children[2].innerText.includes(userV[i][1])) { //name & termin
         userV[i][2] = event.path[1].children[0].checked;
-        //break; //setzt nur einen bool -> mehrfach löschen weg
       }
     }
   }
@@ -105,7 +91,7 @@
 
   function fillListe() { //weitere items von versuch anzeigen?
   document.getElementById("mvDiv").children[3].innerHTML = ""; //ul element
-  //console.log(listV);
+
   var options = {
     valueNames: [ 'name', 'termin', 'raum', 'typ', 'dauer', 'leiter' ],
     item: '<li class="bigList"><input type="checkbox" name="mvCheck"><a href="/vd" class="name"></a><p class="termin"></p><p class="raum"></p><p class="typ"></p><p class="dauer"></p><p class="leiter"></p></li>'
@@ -121,41 +107,17 @@
     listV = [];
     userV = userVStr.split("~"); //versucht nach ersten durchlauf mit etwas nicht vorhandenem zu splitten
     removeEmptyLvs();
-    //console.log(userV);
 
     for (let i=0; i<userV.length; i++) {
       userV[i] = userV[i].split("+");
-      //console.log(userV[i]);
-      //versucht nach ersten durchlauf mit etwas nicht vorhandenem zu splitten
       for (let j=0; j<vArray.length; j++) {
         if (userV[i][0] == vArray[j].name) {
-          //userV[i][0] = vArray[j];
           let wipArray = vArray[j];
-          wipArray["termin"] = userV[i][1]; //termin immer der letzte mit dem versuchsnamen
-          //andere lsg: für einen versuch nur einmal anmelden mgl (versuche mit mehr sitzungen außen vor)
-          //console.log(userV[i][1], wipArray);
+          wipArray["termin"] = userV[i][1];
           listV.push(wipArray);
-          //vArray[j]["termin"] = userV[i][1];
-          //console.log(vArray[j], userV[i][1]);
-          //listV.push(vArray[j]);
         }
       }
     }
-
-    /*
-    for (let i=0; i<vArray.length; i++) {
-      for (let j=0; j<userV.length; j++) {
-        //console.log(userV[j]); //mal string, mal array-wtf
-        //userV[j] = userV[j].split("+");
-        if (userV[j][0] == vArray[i].name) {
-          vArray[i]["termin"] = userV[j][1];
-          //console.log(vArray[i], userV[j][1]);
-          listV.push(vArray[i]);
-        }
-      }
-    }
-    */
-    //console.log(userV);
   }
 
   function removeEmptyLvs() {
@@ -202,10 +164,7 @@
 
   function listenForNames() {
     let namen = document.getElementsByClassName("name");
-    //console.log(event);
     vName = event.path[0].innerText;
-    //vName = vName.replace(" ", "_");
-    //console.log(vName);
     sessionStorage.setItem('versuch', vName);
   }
 

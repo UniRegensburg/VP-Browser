@@ -13,7 +13,6 @@
 <script>
   // @ is an alias to /src
   //import HelloWorld from '@/components/HelloWorld.vue';
-  //console.log("home");
   import Firebase from '../js/Firebase';
 
   let myFirebase = new Firebase(),
@@ -26,12 +25,11 @@
   function loadSessions() {
     vName = sessionStorage.getItem('versuch');
 
-    //name als überschrift
     let strVN = vName.replace(/_/g, " ");
     document.getElementById("sessionTitel").innerHTML = strVN;
 
     versuch = myFirebase.getVersuch();
-    let sessionString = versuch.sessions.replace(/~~/g, ""); //schlecht benannt mit sessions
+    let sessionString = versuch.sessions.replace(/~~/g, "");
     lockedSessionsString = versuch.lockedSes;
     sArray = sessionString.split("~");
     let lsArray = lockedSessionsString.split("~");
@@ -63,11 +61,9 @@
       btn.value = i;
       for (let j=0; j<lsArray.length; j++) {
         if (sArray[i] === lsArray[j]) {
-          //btn.checked = "true"; //geht nicht - siehe versuche
-          btn.disabled = true; //geht - besser sichtbar machen
+          btn.disabled = true;
         }
       }
-      //btn.innerText = sArray[i];
       wrapDiv.appendChild(btn);
 
       //innerText
@@ -101,8 +97,6 @@
     }
   }
 
-  //TODO div wenn man bereits eine session belegt hat
-
   function setupRadioListener() {
     let radio = document.getElementsByName("session");
     for (let i=0; i<radio.length; i++) {
@@ -124,29 +118,24 @@
     lvsStr = sessionStorage.getItem("lvs").replace(/~~/g, "")+userSesStr,
     newSesStr = lockedSessionsString + "~" + sesStr,
     vArray = myFirebase.convertVStrToArray(sessionStorage.getItem("vArrayStr"));;
-    //console.log(lvsStr);
 
     sessionStorage.setItem("lvs", lvsStr);
     myFirebase.userVAnAbmelden(lvsStr);
 
-    //console.log(versuch.lockedSes, newSesStr);
     versuch.lockedSes = newSesStr; //TODO in vArray - oder db neu laden
     myFirebase.lockedSesUpdate(newSesStr, versuch.name);
-    //console.log(versuch);
 
     let sessionDiv = document.getElementsByClassName("inlineP");
     console.log(sesStr);
     for (let i=0; i<sessionDiv.length; i++) {
       console.log(sessionDiv[i].innerText.slice(0, -1));
       if (sesStr == sessionDiv[i].innerText.slice(0, -1)) {
-        console.log("hi");
         sessionDiv[i].children[0].disabled = true;
       }
     }
 
     for (let i=0; i<vArray.length; i++) {
       if (versuch.name == vArray[i].name) {
-        console.log(versuch);
         vArray[i] = versuch;
       }
     }

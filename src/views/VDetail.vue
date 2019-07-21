@@ -20,16 +20,9 @@
   vName = sessionStorage.getItem('versuch');
 
   function loadVDetail() {
-    //console.log(vName);
-
-    //id -> name
-    /*let strVN = "ffs";
-    if (vName != null) {
-      strVN = vName.replace("_", " ");
-    }*/ //-> setExtraText
     document.getElementById("vdvName").innerHTML = vName;
 
-    //list laden
+    //list load
     let versuch = myFirebase.getVersuch(), //später query? jetz alle versuche aus sessionStorage durchsuchen,
     link = versuch.href;
     var options = {
@@ -75,9 +68,7 @@
 
   function setLink(link) {
     let aTag = document.getElementsByClassName("linkSes")[0];
-    //console.log(aTag);
     aTag.addEventListener("click", function() {
-      //console.log("listener");
       window.location.href=link;
     });
   }

@@ -9,14 +9,7 @@
   import navBar from './components/NavBar.vue';
   import Firebase from './js/Firebase';
 
-  //let myFirebase = new Firebase();
-  //myFirebase.getAllVersuche();
-
   sessionStorage.setItem("nutzerName", "vip12345");
-
-  //TODO: seite (home, versuche etc) mounted bevor db infos aus beforeCreate da sind
-  //beim ersten laden mit leerem session storage
-  //mgl lsg: bevor login bool rausgibt ob richtig, zum daten laden ansetzen?
 
   export default {
     components: {
@@ -28,19 +21,14 @@
       myFirebase.getUser().then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
               // doc.data() is never undefined for query doc snapshots
-              //console.log(doc.id, " => ", doc.data());
               let inhalt = doc.data();
-              //console.log(inhalt);
               sessionStorage.setItem("benach", inhalt.benach);
               sessionStorage.setItem("lvs", inhalt.lvs);
-              //return(inhalt);
-              //console.log(new Date().getTime());
           });
       });
-      //console.log(new Date().getTime());
+      //Json would be a good alternative
       myFirebase.getAllVersuche().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          //console.log(`${doc.id} => ${doc.data()}`);
           let singleV = [];
           singleV.push(doc.id);
           let inhalt = doc.data(),
@@ -49,12 +37,8 @@
           singleV.push(vDataStr);
           versuchsArray.push(singleV);
         })
-        //console.log(versuchsArray);
         sessionStorage.setItem("vArrayStr", versuchsArray);
         });
-      //console.log(sessionStorage.getItem("vArrayStr"));
-      //console.log(sessionStorage.getItem("benach"));
-      //console.log(sessionStorage.getItem("lvs"));
     }
   };
 </script>

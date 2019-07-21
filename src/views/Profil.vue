@@ -9,6 +9,7 @@
       <input type="radio" name="email" value="3">Keine<br>
     </div>
     <button id="benachButton">Einstellungen speichern</button>
+    <p id="einstSaved">Einstellungen erfolgreich gespeichert.</p>
     <br>
     <router-link to="/mv">meine Versuche</router-link>
   </div>
@@ -17,7 +18,6 @@
 <script>
   // @ is an alias to /src
   //import HelloWorld from '@/components/HelloWorld.vue';
-  //console.log("home");
 
   import Firebase from '../js/Firebase';
 
@@ -25,15 +25,17 @@
   benachValue;
 
   function loadProfil() {
-    setH1();
+    setText();
     setBenachListener();
     setBenachChecked();
     setSpeichern();
   }
 
-  function setH1() {
-    let h1 = document.getElementById("profilH1");
+  function setText() {
+    let h1 = document.getElementById("profilH1"),
+    savedTag = document.getElementById("einstSaved");
     h1.innerText = h1.innerText + " - " + sessionStorage.getItem("nutzerName");
+    savedTag.style.visibility = "hidden";
   }
 
   function setBenachListener() {
@@ -62,6 +64,9 @@
     let benachButton = document.getElementById("benachButton");
 
     benachButton.addEventListener("click", function() {
+      let savedTag = document.getElementById("einstSaved");
+      savedTag.style.visibility = "visible";
+
       myFirebase.setBenachDB(benachValue);
       sessionStorage.setItem("benach", benachValue);
     });

@@ -5,9 +5,6 @@ import router from './router';
 
 Vue.config.productionTip = false;
 
-//let app = '';
-//let myFirebase = new Firebase();
-
 // Your web app's Firebase configuration
 var firebaseConfig = {
   apiKey: "AIzaSyAeEM115w4jlyaBcTzSnhAtASvoONr6O7o",
@@ -20,15 +17,8 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 Firebase.initializeApp(firebaseConfig);
-//myFirebase.getAllVersuche(function(array) {
-//  console.log(array);
-//});
-//if (!app) {
-  new Vue({ //app = 
+
+  new Vue({
     router,
     render: h => h(App),
   }).$mount('#app');
-//}
-/* mom ohne
-vue add vuex
-*/

@@ -28,7 +28,6 @@
 <script>
   // @ is an alias to /src
   //import HelloWorld from '@/components/HelloWorld.vue';
-  //console.log("home");
   import Firebase from '../js/Firebase';
 
   let myFirebase = new Firebase(),
@@ -129,7 +128,6 @@
     for (let i=0; i<dateArray.length; i++) {
       for (let j=0; j<userV.length; j++) {
         if ((dateArray[i] - new Date(userV[j][1])) == 0) {
-          //console.log(userV[j]);
           for (let k=0; k<vArray.length; k++) {
             if ((userV[j][0] == vArray[k].name) && (listV.length == 0)) {
               vArray[k]["termin"] = userV[j][1];
@@ -164,7 +162,7 @@
 
   function fillListe() { //weitere items von versuch anzeigen?
   document.getElementById("nvDiv").children[0].innerHTML = ""; //ul element
-  //console.log(listV);
+
   var options = {
     valueNames: [ 'name', 'termin', 'raum', 'typ', 'dauer', 'leiter' ],
     item: '<li><a href="/vd" class="name"></a><p class="termin"></p><p class="raum"></p><p class="typ"></p><p class="dauer"></p><p class="leiter"></p></li>'
@@ -210,17 +208,13 @@
 
   function listenForNames() {
     let namen = document.getElementsByClassName("name");
-    //console.log(event);
     vName = event.path[0].innerText;
-    //vName = vName.replace(" ", "_");
-    //console.log(vName);
     sessionStorage.setItem('versuch', vName);
   }
 
   function sortDates(dateArray) {
     dateArray.sort(function(a, b){return a-b});
     //https://www.w3schools.com/jsref/jsref_sort.asp
-    //console.log(dateArray);
     return(dateArray);
   }
 
