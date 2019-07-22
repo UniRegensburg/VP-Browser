@@ -134,7 +134,7 @@ Firebase.prototype.reloadData = function() {
       //console.log("Document successfully updated!");
   });
   db.collection("versuche").doc(appId).update({
-      lockedSes: navLocked
+      lockedSes: appLocked
   })
   .then(function() {
       //console.log("Document successfully updated!");
