@@ -23,32 +23,32 @@ In this prototype the users use a simulated account. This account can still regi
 ### Startpage
 Startpage with next experiment session
 
-![start](https://github.com/UniRegensburg/VP-Browser/tree/master/src/assets/vp_home.png?raw=true)
+![start](https://github.com/UniRegensburg/VP-Browser/tree/master/src/assets/vp_home.PNG?raw=true)
 
 ### Experiment list
 List of all experiments with filter funcionality
 
-![experiment list](https://github.com/UniRegensburg/VP-Browser/tree/master/src/assets/vp_vl.png?raw=true)
+![experiment list](https://github.com/UniRegensburg/VP-Browser/tree/master/src/assets/vp_vl.PNG?raw=true)
 
 ### Experiment detail
 Experiment specific page with more data
 
-![experiment detail](https://github.com/UniRegensburg/VP-Browser/tree/master/src/assets/vp_vd.png?raw=true)
+![experiment detail](https://github.com/UniRegensburg/VP-Browser/tree/master/src/assets/vp_vd.PNG?raw=true)
 
 ### Experiment sessions
 Experiment specific page with more sessions and registration
 
-![experiment sessions](https://github.com/UniRegensburg/VP-Browser/tree/master/src/assets/vp_sessions.png?raw=true)
+![experiment sessions](https://github.com/UniRegensburg/VP-Browser/tree/master/src/assets/vp_sessions.PNG?raw=true)
 
 ### My experiments
 Experiment the user registered for
 
-![experiment sessions](https://github.com/UniRegensburg/VP-Browser/tree/master/src/assets/vp_mv.png?raw=true)
+![experiment sessions](https://github.com/UniRegensburg/VP-Browser/tree/master/src/assets/vp_mv.PNG?raw=true)
 
 ### Profil
 Profil with user settings
 
-![experiment sessions](https://github.com/UniRegensburg/VP-Browser/tree/master/src/assets/vp_profil.png?raw=true)
+![experiment sessions](https://github.com/UniRegensburg/VP-Browser/tree/master/src/assets/vp_profil.PNG?raw=true)
 
 
 ## How To Use
