@@ -61,5 +61,8 @@ npm install
 npm run serve
 ```
 
+Use username "vip12345" and password "experi" for login.
+For the duration of grading the database will remain active, afterwards it will be shut down.
+
 ### License
 [MIT](https://opensource.org/licenses/MIT)
